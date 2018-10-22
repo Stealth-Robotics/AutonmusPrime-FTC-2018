@@ -4,23 +4,33 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import java.util.Set;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import android.content.Context;
 
 
-public class AutonmusPrimeRobotMap {
+
+public class AutonomousPrimeRobotMap {
     
     private HardwareMap hardwareMap;
 
-    public DcMotor frontLeftDrive = null;
-    public DcMotor frontRightDrive = null;
-    public DcMotor rearLeftDrive = null;
-    public DcMotor rearRightDrive = null;
+    public enum DriveMode{
+        Run_With_Encoders,
+        Run_Without_Encoders
+    }
+
+    public DriveMode driveMode = DriveMode.Run_Without_Encoders;
+
+    public DcMotor frontLeftDrive;
+    public DcMotor frontRightDrive;
+    public DcMotor rearLeftDrive;
+    public DcMotor rearRightDrive;
     
     // The IMU sensor object
     public BNO055IMU imu;
     
-    public AutonmusPrimeRobotMap(HardwareMap HwMap) {
+    public AutonomousPrimeRobotMap(HardwareMap HwMap) {
 
         hardwareMap = HwMap;
         
@@ -39,9 +49,18 @@ public class AutonmusPrimeRobotMap {
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         rearLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rearRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        rearRightDrive.setDirection(DcMotor.Direction.REVERSE);
         
         initIMU();
+    }
+
+    //NOTE: IT IS IMPORTANT THAT THIS IS IMPLEMENTED IN THE LOOP FUNCTION OF THE OPMODE
+    public void Loop() {
+        //if the drive mode is encoders then mirror the rear motors so that we just use the encoders of the front motors
+        if(driveMode == DriveMode.Run_With_Encoders){
+            rearLeftDrive.setPower(frontLeftDrive.getPower());
+            rearRightDrive.setPower(frontRightDrive.getPower());
+        }
     }
     
     public void SetDriveModeNoEncoders() {
@@ -49,13 +68,16 @@ public class AutonmusPrimeRobotMap {
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveMode = DriveMode.Run_Without_Encoders;
     }
     
     public void SetDriveModeEncoders() {
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rearLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rearRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //set the back two motors to run without encoders so that we can just mirror the power being sent to the front wheels with the encoders
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveMode = DriveMode.Run_With_Encoders;
     }
     
     public void ResetDriveEncoders() {
@@ -63,6 +85,7 @@ public class AutonmusPrimeRobotMap {
         frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveMode = DriveMode.Run_With_Encoders;
     }
     
     private void initIMU() {
@@ -75,6 +98,5 @@ public class AutonmusPrimeRobotMap {
         
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-        
     }
 }
