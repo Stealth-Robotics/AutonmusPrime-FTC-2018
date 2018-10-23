@@ -20,7 +20,6 @@ public class AutonomousPrime_Auto_DriveStraight extends OpMode {
         
     }
 
-    
     @Override
     public void start() {
         robotCommands.DriveForTicks(1000, 1000);
@@ -35,11 +34,8 @@ public class AutonomousPrime_Auto_DriveStraight extends OpMode {
 
         //call the loop function on the robot map
         robotCommands.robotMap.Loop();
-        
     }
 
-    
-    
     @Override
     public void stop() {
         robotCommands.KillDriveMotorPower();
