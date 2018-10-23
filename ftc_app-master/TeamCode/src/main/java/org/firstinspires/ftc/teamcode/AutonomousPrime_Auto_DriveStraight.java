@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="Autonomous Prime TELEOP", group="Iterative Opmode")
+@Autonomous(name = "Autonomous Prime Auto Drive Straight", group = "Iterative Opmode")
 
 public class AutonomousPrime_Auto_DriveStraight extends OpMode {
 
