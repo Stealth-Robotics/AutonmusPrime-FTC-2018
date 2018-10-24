@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -8,17 +9,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class AutonomousPrimeRobotCommands {
-    public AutonomousPrimeRobotMap robotMap;
+    public AutonomousPrimeRobotMap RobotMap;
+    public Object SyncObject;
+    private ElapsedTime ElapsedTimer;
     
     public AutonomousPrimeRobotCommands(HardwareMap HwMap) {
         
-        robotMap = new AutonomousPrimeRobotMap(HwMap);
+        RobotMap = new AutonomousPrimeRobotMap(HwMap);
+
+        ElapsedTime.Resolution res = com.qualcomm.robotcore.util.ElapsedTime.Resolution.MILLISECONDS;
+        ElapsedTimer = new ElapsedTime(res);
     }
     
     public void MechanumDrive(double LeftStickX, double LeftStickY, double RightStickX) {
-        robotMap.SetDriveModeNoEncoders();
+        RobotMap.SetDriveModeNoEncoders();
         
-        double actualAngle = robotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+        double actualAngle = RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
         
         final double x = Math.pow(-LeftStickX, 3.0);
         final double y = Math.pow(LeftStickY, 3.0);
@@ -32,19 +38,19 @@ public class AutonomousPrimeRobotCommands {
         final double lr = speed * Math.cos(direction + Math.PI / 4.0) + rotation;
         final double rr = speed * Math.sin(direction + Math.PI / 4.0) - rotation;
         
-        robotMap.frontLeftDrive.setPower(lf);
-        robotMap.frontRightDrive.setPower(rf);
-        robotMap.rearLeftDrive.setPower(lr);
-        robotMap.rearRightDrive.setPower(rr);
+        RobotMap.frontLeftDrive.setPower(lf);
+        RobotMap.frontRightDrive.setPower(rf);
+        RobotMap.rearLeftDrive.setPower(lr);
+        RobotMap.rearRightDrive.setPower(rr);
     }
     
     public void TankDrive(double LeftStickY, double RightStickY) {
-        robotMap.SetDriveModeNoEncoders();
+        RobotMap.SetDriveModeNoEncoders();
         
-        robotMap.frontLeftDrive.setPower(LeftStickY);
-        robotMap.frontRightDrive.setPower(RightStickY);
-        robotMap.rearLeftDrive.setPower(-LeftStickY);
-        robotMap.rearRightDrive.setPower(-RightStickY);
+        RobotMap.frontLeftDrive.setPower(LeftStickY);
+        RobotMap.frontRightDrive.setPower(RightStickY);
+        RobotMap.rearLeftDrive.setPower(-LeftStickY);
+        RobotMap.rearRightDrive.setPower(-RightStickY);
     }
 
     public void POVDrive(double Drive, double Turn){
@@ -59,29 +65,76 @@ public class AutonomousPrimeRobotCommands {
         leftPower = Range.clip(Drive + Turn, -1.0, 1.0) ;
         rightPower = Range.clip(Drive - Turn, -1.0, 1.0) ;
 
-        robotMap.frontLeftDrive.setPower(leftPower * frontWheelPowerPercent);
-        robotMap.frontRightDrive.setPower(rightPower * frontWheelPowerPercent);
-        robotMap.rearLeftDrive.setPower(leftPower * rearWheelPowerPercent);
-        robotMap.rearRightDrive.setPower(rightPower * rearWheelPowerPercent);
+        RobotMap.frontLeftDrive.setPower(leftPower * frontWheelPowerPercent);
+        RobotMap.frontRightDrive.setPower(rightPower * frontWheelPowerPercent);
+        RobotMap.rearLeftDrive.setPower(leftPower * rearWheelPowerPercent);
+        RobotMap.rearRightDrive.setPower(rightPower * rearWheelPowerPercent);
     }
     
     public void KillDriveMotorPower() {
-        robotMap.SetDriveModeNoEncoders();
-        robotMap.frontLeftDrive.setPower(0);
-        robotMap.frontRightDrive.setPower(0);
-        robotMap.rearLeftDrive.setPower(0);
-        robotMap.rearRightDrive.setPower(0);
+        RobotMap.SetDriveModeNoEncoders();
+        RobotMap.frontLeftDrive.setPower(0);
+        RobotMap.frontRightDrive.setPower(0);
+        RobotMap.rearLeftDrive.setPower(0);
+        RobotMap.rearRightDrive.setPower(0);
     }
     
     public void DriveForTicks(int targetL, int targetR) {
-        robotMap.ResetDriveEncoders();
-        robotMap.SetDriveModeEncoders();
+        RobotMap.ResetDriveEncoders();
+        RobotMap.SetDriveModeEncoders();
         
-        robotMap.frontLeftDrive.setTargetPosition(targetL);
-        robotMap.frontLeftDrive.setPower(0.8);
+        RobotMap.frontLeftDrive.setTargetPosition(targetL);
+        RobotMap.frontLeftDrive.setPower(0.8);
         
-        robotMap.frontRightDrive.setTargetPosition(targetR);
-        robotMap.frontRightDrive.setPower(0.8);
+        RobotMap.frontRightDrive.setTargetPosition(targetR);
+        RobotMap.frontRightDrive.setPower(0.8);
+    }
+
+
+
+    private double ANGLEPID_Kp = 1, ANGLEPID_Ki = 1, ANGLEPID_Kd = 1;
+    private double ANGLEPID_targetAngle = 0, ANGLEPID_previousError, ANGLEPID_integral = 0;
+    private boolean ANGLEPID_Active = false;
+
+    public void TurnToAngle(double targetAngle) throws InterruptedException {
+        ANGLEPID_targetAngle = targetAngle;
+        RobotMap.SetDriveModeNoEncoders();
+        ANGLEPID_Active = true;
+
+        //reset the integral
+        ANGLEPID_integral = 0;
+
+        do {
+            double dt = ElapsedTimer.milliseconds();
+            ANGLEPID_Active = AnglePID(dt);
+            wait(20);
+            ElapsedTimer.reset();
+        } while (ANGLEPID_Active);
+
+        /*synchronized (SyncObject){
+            SyncObject.notify();
+        }*/
+    }
+
+    private boolean AnglePID(double dt) {
+        double currentAngle = RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        double error = ANGLEPID_targetAngle - currentAngle;
+        ANGLEPID_integral = ANGLEPID_integral + error * dt;
+        double derivative = (error - ANGLEPID_previousError) / dt;
+        double output = ANGLEPID_Kp * error + ANGLEPID_Ki * ANGLEPID_integral + ANGLEPID_Kd * derivative;
+        ANGLEPID_previousError = error;
+
+        output = Range.clip(output,-1,1);
+
+        RobotMap.frontLeftDrive.setPower(output);
+        RobotMap.rearLeftDrive.setPower(output);
+        RobotMap.frontRightDrive.setPower(-output);
+        RobotMap.rearRightDrive.setPower(-output);
+
+        if(error < 5 && error > 5){
+            return true;
+        }
+        return false;
     }
     
     

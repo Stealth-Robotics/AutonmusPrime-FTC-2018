@@ -39,14 +39,12 @@ public class AutonomousPrimeTeleop extends OpMode {
             }
             robotCommands.POVDrive(drive ,gamepad1.left_stick_x);
         //endregion
-        
-        telemetry.addData("Encoder_RR", robotCommands.robotMap.rearRightDrive.getCurrentPosition());
-        telemetry.addData("Encoder_RL", robotCommands.robotMap.rearLeftDrive.getCurrentPosition());
-        telemetry.addData("Encoder_FR", robotCommands.robotMap.frontRightDrive.getCurrentPosition());
-        telemetry.addData("Encoder_FL", robotCommands.robotMap.frontLeftDrive.getCurrentPosition());
+
+        telemetry.addData("Encoder_FR", robotCommands.RobotMap.frontRightDrive.getCurrentPosition());
+        telemetry.addData("Encoder_FL", robotCommands.RobotMap.frontLeftDrive.getCurrentPosition());
 
         //call the loop function on the robot map
-        robotCommands.robotMap.Loop();
+        robotCommands.RobotMap.Loop();
         
     }
 
