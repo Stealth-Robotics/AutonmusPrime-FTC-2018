@@ -90,13 +90,12 @@ public class AutonomousPrimeRobotCommands {
         RobotMap.frontRightDrive.setPower(0.8);
     }
 
-
-
-    private double ANGLEPID_Kp = 1, ANGLEPID_Ki = 1, ANGLEPID_Kd = 1;
-    private double ANGLEPID_targetAngle = 0, ANGLEPID_previousError, ANGLEPID_integral = 0;
+    //region TurnToAnglePID
+    private double ANGLEPID_Kp = 0.333, ANGLEPID_Ki = 0, ANGLEPID_Kd = 0;
+    private double ANGLEPID_targetAngle = 0, ANGLEPID_previousError, ANGLEPID_integral = 0, ANGLEPID_MinAcceptableRange = -10, ANGLEPID_MaxAcceptableRange = 10;
     private boolean ANGLEPID_Active = false;
 
-    public void TurnToAngle(double targetAngle) throws InterruptedException {
+    public void TurnToAngle(double targetAngle) /*throws InterruptedException*/ {
         ANGLEPID_targetAngle = targetAngle;
         RobotMap.SetDriveModeNoEncoders();
         ANGLEPID_Active = true;
@@ -107,7 +106,7 @@ public class AutonomousPrimeRobotCommands {
         do {
             double dt = ElapsedTimer.milliseconds();
             ANGLEPID_Active = AnglePID(dt);
-            wait(20);
+            //wait(20);
             ElapsedTimer.reset();
         } while (ANGLEPID_Active);
 
@@ -117,7 +116,7 @@ public class AutonomousPrimeRobotCommands {
     }
 
     private boolean AnglePID(double dt) {
-        double currentAngle = RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        double currentAngle = RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle;
         double error = ANGLEPID_targetAngle - currentAngle;
         ANGLEPID_integral = ANGLEPID_integral + error * dt;
         double derivative = (error - ANGLEPID_previousError) / dt;
@@ -131,12 +130,12 @@ public class AutonomousPrimeRobotCommands {
         RobotMap.frontRightDrive.setPower(-output);
         RobotMap.rearRightDrive.setPower(-output);
 
-        if(error < 5 && error > 5){
+        if(error < ANGLEPID_MinAcceptableRange && error > ANGLEPID_MaxAcceptableRange){
             return true;
         }
         return false;
     }
-    
+    //endregion
     
     
 }

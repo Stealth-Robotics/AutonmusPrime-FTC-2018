@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 @TeleOp(name="Autonomous Prime TELEOP", group="Iterative Opmode")
 
 public class AutonomousPrimeTeleop extends OpMode {
@@ -37,11 +41,13 @@ public class AutonomousPrimeTeleop extends OpMode {
             } else if (gamepad1.right_trigger > deadZone){
                 drive  = -gamepad1.right_trigger;
             }
-            robotCommands.POVDrive(drive ,gamepad1.left_stick_x);
+            robotCommands.POVDrive(gamepad1.left_stick_x, drive);
         //endregion
 
         telemetry.addData("Encoder_FR", robotCommands.RobotMap.frontRightDrive.getCurrentPosition());
         telemetry.addData("Encoder_FL", robotCommands.RobotMap.frontLeftDrive.getCurrentPosition());
+        telemetry.addData("CurrentAngle", robotCommands.RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle);
+
 
         //call the loop function on the robot map
         robotCommands.RobotMap.Loop();
