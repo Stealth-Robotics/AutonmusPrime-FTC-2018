@@ -7,9 +7,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import android.content.Context;
-
-
 
 public class AutonomousPrimeRobotMap {
     
@@ -26,6 +26,11 @@ public class AutonomousPrimeRobotMap {
     public DcMotor frontRightDrive;
     public DcMotor rearLeftDrive;
     public DcMotor rearRightDrive;
+
+    public DcMotor leftClamFoot;
+    public DcMotor rightClamFoot;
+
+    public Servo climbHook;
     
     // The IMU sensor object
     public BNO055IMU imu;
@@ -33,7 +38,9 @@ public class AutonomousPrimeRobotMap {
     public AutonomousPrimeRobotMap(HardwareMap HwMap) {
 
         hardwareMap = HwMap;
-        
+
+        //region Drive Base
+
         frontLeftDrive  = hardwareMap.get(DcMotor.class, "1:0");
         frontRightDrive = hardwareMap.get(DcMotor.class, "1:1");
         rearLeftDrive = hardwareMap.get(DcMotor.class, "1:2");
@@ -50,6 +57,18 @@ public class AutonomousPrimeRobotMap {
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         rearLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         rearRightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        //endregion
+
+        //region Clam Feet
+        leftClamFoot = hardwareMap.get(DcMotor.class, "2:1");
+        rightClamFoot = hardwareMap.get(DcMotor.class, "2:2");
+
+        leftClamFoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightClamFoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //endregion
+
+        climbHook = hardwareMap.get(Servo.class, "Servo1:1");
         
         initIMU();
     }

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class AutonomousPrimeRobotCommands {
     public AutonomousPrimeRobotMap RobotMap;
-    public Object SyncObject;
+    //public Object SyncObject;
     private ElapsedTime ElapsedTimer;
     
     public AutonomousPrimeRobotCommands(HardwareMap HwMap) {
@@ -20,7 +20,9 @@ public class AutonomousPrimeRobotCommands {
         ElapsedTime.Resolution res = com.qualcomm.robotcore.util.ElapsedTime.Resolution.MILLISECONDS;
         ElapsedTimer = new ElapsedTime(res);
     }
-    
+
+    //region Base Drive
+
     public void MechanumDrive(double LeftStickX, double LeftStickY, double RightStickX) {
         RobotMap.SetDriveModeNoEncoders();
         
@@ -136,6 +138,28 @@ public class AutonomousPrimeRobotCommands {
         return false;
     }
     //endregion
+
+    //endregion
+
+    //region Clam Feet
+    public void ClamFeetManualDrive(double leftPower, double rightPower){
+
+        RobotMap.leftClamFoot.setPower(leftPower);
+        RobotMap.rightClamFoot.setPower(rightPower);
+    }
+    //endregion
+
+    //region Climb Hook
+    public void OpenHook(){
+        RobotMap.climbHook.setPosition(180);
+    }
+
+    public void CloseHook(){
+        RobotMap.climbHook.setPosition(0);
+    }
+    //endregion
+
+
     
     
 }
