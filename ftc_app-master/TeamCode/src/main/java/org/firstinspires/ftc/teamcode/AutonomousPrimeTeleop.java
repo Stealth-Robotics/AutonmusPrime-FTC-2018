@@ -60,7 +60,7 @@ public class AutonomousPrimeTeleop extends OpMode {
             right = 0.0;
         }
 
-        robotCommands.ClamFeetManualDrive(left, right);
+        robotCommands.ClamFeetManualDrive(left, -right);
         //endregion
 
         //region Climb Hook
