@@ -66,6 +66,9 @@ public class AutonomousPrimeRobotMap {
 
         leftClamFoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightClamFoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        leftClamFoot.setDirection(DcMotor.Direction.FORWARD);
+        rightClamFoot.setDirection(DcMotor.Direction.REVERSE);
         //endregion
 
         climbHook = hardwareMap.get(Servo.class, "Servo1:1");

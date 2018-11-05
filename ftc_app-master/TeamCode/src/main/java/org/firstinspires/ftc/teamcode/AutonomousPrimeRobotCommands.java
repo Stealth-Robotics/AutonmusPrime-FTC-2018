@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Utils.StopWatch;
 
 public class AutonomousPrimeRobotCommands {
     public AutonomousPrimeRobotMap RobotMap;
@@ -141,29 +142,38 @@ public class AutonomousPrimeRobotCommands {
 
     //endregion
 
-    //region Auto Climb Feet Drive
-    public void ClamFeetAutoDrive(double power, int driveTime) // power - power for the left clam foot motor and right clam foot motor, driveTime - amount of time to drive the motors for
+    //region Climb Feet
+
+    //region Auto Commands
+    public void ClamFeetAutoDrive(double powerL, double powerR, int driveTime) // power - power for the left clam foot motor and right clam foot motor, driveTime - amount of time to drive the motors for
     {
 
         StopWatch clamFootStopWatch = new StopWatch(driveTime);
 
-        while(clamFootStopWatch.isExpired() == false) // while stop watch not expired
+        while(!clamFootStopWatch.isExpired()) // while stop watch not expired
         {
-            RobotMap.leftClamFoot.setPower(power);
-            RobotMap.rightClamFoot.setPower(power);
+            RobotMap.leftClamFoot.setPower(powerL);
+            RobotMap.rightClamFoot.setPower(powerR);
         }
 
         RobotMap.leftClamFoot.setPower(0);
         RobotMap.rightClamFoot.setPower(0);
         clamFootStopWatch.reset();
     }
+    //endregion
 
-    //region Manual Clam Feet Drive
-    public void ClamFeetManualDrive(double leftPower, double rightPower){
+    //region Manual Commands
+    public void ClimbFeetDrive(double leftPower, double rightPower){
 
         RobotMap.leftClamFoot.setPower(leftPower);
         RobotMap.rightClamFoot.setPower(rightPower);
     }
+    //endregion
+
+    //region PID Commands
+
+    //endregion
+
     //endregion
 
     //region Climb Hook
@@ -175,8 +185,4 @@ public class AutonomousPrimeRobotCommands {
         RobotMap.climbHook.setPosition(0);
     }
     //endregion
-
-
-    
-    
 }
