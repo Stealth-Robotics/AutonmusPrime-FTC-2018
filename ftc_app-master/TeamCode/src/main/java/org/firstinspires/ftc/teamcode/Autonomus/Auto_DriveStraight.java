@@ -7,17 +7,17 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.AutonomousPrimeRobotCommands;
+import org.firstinspires.ftc.teamcode.RobotCommands;
 
 @Autonomous(name = "Literally Drive Straight", group = "Iterative Opmode")
 @Disabled
 public class Auto_DriveStraight extends OpMode {
 
-    private AutonomousPrimeRobotCommands robotCommands;
+    private RobotCommands robotCommands;
     
     @Override
     public void init() {
-        robotCommands = new AutonomousPrimeRobotCommands(hardwareMap);
+        robotCommands = new RobotCommands(hardwareMap);
     }
     
     @Override

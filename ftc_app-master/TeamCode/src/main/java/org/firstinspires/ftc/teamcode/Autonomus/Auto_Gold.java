@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonomus;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.AutonomousPrimeRobotCommands;
+import org.firstinspires.ftc.teamcode.RobotCommands;
 import org.firstinspires.ftc.teamcode.Commands.DropHang;
 import org.firstinspires.ftc.teamcode.Commands.TelemetryLog;
 
@@ -14,11 +11,11 @@ import org.firstinspires.ftc.teamcode.Commands.TelemetryLog;
 
 public class Auto_Gold extends OpMode {
 
-    private AutonomousPrimeRobotCommands robotCommands;
+    private RobotCommands robotCommands;
     
     @Override
     public void init() {
-        robotCommands = new AutonomousPrimeRobotCommands(hardwareMap);
+        robotCommands = new RobotCommands(hardwareMap);
     }
     
     @Override

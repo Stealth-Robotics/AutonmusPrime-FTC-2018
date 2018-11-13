@@ -9,14 +9,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Utils.StopWatch;
 
-public class AutonomousPrimeRobotCommands {
-    public AutonomousPrimeRobotMap RobotMap;
+public class RobotCommands {
+    public org.firstinspires.ftc.teamcode.RobotMap RobotMap;
     //public Object SyncObject;
     private ElapsedTime ElapsedTimer;
     
-    public AutonomousPrimeRobotCommands(HardwareMap HwMap) {
+    public RobotCommands(HardwareMap HwMap) {
         
-        RobotMap = new AutonomousPrimeRobotMap(HwMap);
+        RobotMap = new RobotMap(HwMap);
 
         ElapsedTime.Resolution res = com.qualcomm.robotcore.util.ElapsedTime.Resolution.MILLISECONDS;
         ElapsedTimer = new ElapsedTime(res);
@@ -178,10 +178,10 @@ public class AutonomousPrimeRobotCommands {
         RobotMap.SetClimbModeEncoders();
 
         RobotMap.rightClamFoot.setTargetPosition(targetL);
-        RobotMap.rightClamFoot.setPower(0.7);
+        RobotMap.rightClamFoot.setPower(0.8);
 
         RobotMap.leftClamFoot.setTargetPosition(targetR);
-        RobotMap.leftClamFoot.setPower(0.7);
+        RobotMap.leftClamFoot.setPower(0.8);
 
         //hold until it is done
         while (!isClimbFeetForTicksDone()){

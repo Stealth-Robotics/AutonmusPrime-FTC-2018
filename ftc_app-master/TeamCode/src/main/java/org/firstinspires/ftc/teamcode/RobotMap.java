@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import android.content.Context;
 
-public class AutonomousPrimeRobotMap {
+public class RobotMap {
     
     private HardwareMap hardwareMap;
 
@@ -36,7 +36,7 @@ public class AutonomousPrimeRobotMap {
     // The IMU sensor object
     public BNO055IMU imu;
     
-    public AutonomousPrimeRobotMap(HardwareMap HwMap) {
+    public RobotMap(HardwareMap HwMap) {
 
         hardwareMap = HwMap;
 

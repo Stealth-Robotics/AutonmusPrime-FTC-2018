@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.AutonomousPrimeRobotCommands;
+import org.firstinspires.ftc.teamcode.RobotCommands;
 import org.firstinspires.ftc.teamcode.Commands.DropHang;
 
 @Autonomous(name="Linear OpMode Drop Hang", group="Linear Opmode")
@@ -43,11 +43,11 @@ public class Auto_LinearOpModeDropHang extends LinearOpMode {
     //public Object SyncObject;
     private ElapsedTime ElapsedTimer;
 
-    private AutonomousPrimeRobotCommands robotCommands;
+    private RobotCommands robotCommands;
 
     @Override
     public void runOpMode() {
-        robotCommands = new AutonomousPrimeRobotCommands(hardwareMap);
+        robotCommands = new RobotCommands(hardwareMap);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
