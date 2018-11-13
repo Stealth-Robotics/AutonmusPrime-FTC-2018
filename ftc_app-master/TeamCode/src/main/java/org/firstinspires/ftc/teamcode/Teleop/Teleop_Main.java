@@ -8,9 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.AutonomousPrimeRobotCommands;
 
-@TeleOp(name="Autonomous Prime TELEOP", group="Iterative Opmode")
+@TeleOp(name="TELEOP Main", group="Iterative Opmode")
 
-public class AutonomousPrimeTeleop extends OpMode {
+public class Teleop_Main extends OpMode {
 
     private AutonomousPrimeRobotCommands robotCommands;
     
@@ -60,7 +60,7 @@ public class AutonomousPrimeTeleop extends OpMode {
             right = 0.0;
         }
 
-        robotCommands.ClimbFeetDrive(left, -right);
+        robotCommands.ClimbFeetDrive(-left, -right);
         //endregion
 
         //region Climb Hook
@@ -75,7 +75,7 @@ public class AutonomousPrimeTeleop extends OpMode {
 
         telemetry.addData("Encoder_FR", robotCommands.RobotMap.frontRightDrive.getCurrentPosition());
         telemetry.addData("Encoder_FL", robotCommands.RobotMap.frontLeftDrive.getCurrentPosition());
-        telemetry.addData("CurrentAngle", robotCommands.RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle);
+        telemetry.addData("CurrentAngle", robotCommands.RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         telemetry.addData("HookPosition", robotCommands.RobotMap.climbHook.getPosition());
 
         //call the loop function on the robot map

@@ -7,10 +7,12 @@ public class StopWatch {
 
     public StopWatch(int waitTime) {
         mWaitTime = waitTime;
+        reset();
     }
 
     public void setTime(int waitTime) {
         mWaitTime = waitTime;
+        reset();
     }
 
     public boolean isExpired() {

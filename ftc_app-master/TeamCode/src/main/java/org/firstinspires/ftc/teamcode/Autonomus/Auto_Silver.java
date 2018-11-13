@@ -1,17 +1,17 @@
 package org.firstinspires.ftc.teamcode.Autonomus;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.AutonomousPrimeRobotCommands;
+import org.firstinspires.ftc.teamcode.Commands.DropHang;
 
-@Autonomous(name = "Autonomous Prime Auto Drive Straight", group = "Iterative Opmode")
-@Disabled
-public class AutonomousPrime_Auto_DriveStraight extends OpMode {
+@Autonomous(name = "Auto Silver", group = "Iterative Opmode")
+
+public class Auto_Silver extends OpMode {
 
     private AutonomousPrimeRobotCommands robotCommands;
     
@@ -27,28 +27,21 @@ public class AutonomousPrime_Auto_DriveStraight extends OpMode {
 
     @Override
     public  void start() {
-        robotCommands.TurnToAngle(90);
-        /*try {
-            robotCommands.TurnToAngle(90);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        /*synchronized (robotCommands.SyncObject){
-            try {
-                robotCommands.SyncObject.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
-        robotCommands.DriveForTicks(1000, 1000);
 
+        DropHang.Run(robotCommands);
+
+        robotCommands.DriveForTicks(2000, 2000);
     }
 
     @Override
     public void loop() {
         telemetry.addData("Encoder_FR", robotCommands.RobotMap.frontRightDrive.getCurrentPosition());
+        telemetry.addData("Motor_FR", robotCommands.RobotMap.frontRightDrive.getPower());
         telemetry.addData("Encoder_FL", robotCommands.RobotMap.frontLeftDrive.getCurrentPosition());
-        telemetry.addData("CurrentAngle", robotCommands.RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle);
+        telemetry.addData("Motor_FL", robotCommands.RobotMap.frontLeftDrive.getPower());
+        telemetry.addData("Motor_RR", robotCommands.RobotMap.rearRightDrive.getPower());
+        telemetry.addData("Motor_RL", robotCommands.RobotMap.rearLeftDrive.getPower());
+        telemetry.addData("CurrentAngle", robotCommands.RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
 
         //call the loop function on the robot map
         robotCommands.RobotMap.Loop();

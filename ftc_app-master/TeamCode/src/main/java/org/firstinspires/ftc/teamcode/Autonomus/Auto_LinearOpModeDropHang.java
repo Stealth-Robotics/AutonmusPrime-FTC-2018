@@ -30,14 +30,16 @@
 package org.firstinspires.ftc.teamcode.Autonomus;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AutonomousPrimeRobotCommands;
+import org.firstinspires.ftc.teamcode.Commands.DropHang;
 
-@Autonomous(name="Basic: Linear OpMode Drop Hang", group="Linear Opmode")
-
-public class AutonOpMode_LinearDropHang extends LinearOpMode {
+@Autonomous(name="Linear OpMode Drop Hang", group="Linear Opmode")
+@Disabled
+public class Auto_LinearOpModeDropHang extends LinearOpMode {
     //public Object SyncObject;
     private ElapsedTime ElapsedTimer;
 
@@ -50,12 +52,7 @@ public class AutonOpMode_LinearDropHang extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        robotCommands.ClamFeetAutoDrive(-1, -1,100);
-
-        robotCommands.OpenHook();
-
-        robotCommands.ClamFeetAutoDrive(1,1,100);
-
+        DropHang.Run(robotCommands);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

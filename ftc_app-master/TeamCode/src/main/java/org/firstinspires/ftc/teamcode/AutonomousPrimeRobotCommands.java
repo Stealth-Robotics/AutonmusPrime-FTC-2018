@@ -60,8 +60,8 @@ public class AutonomousPrimeRobotCommands {
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
-        double frontWheelPowerPercent = 0.8;
-        double rearWheelPowerPercent = 1;
+        double frontWheelPowerPercent = 1;
+        double rearWheelPowerPercent = 0.6;
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
@@ -89,37 +89,49 @@ public class AutonomousPrimeRobotCommands {
         RobotMap.frontLeftDrive.setTargetPosition(targetL);
         RobotMap.frontLeftDrive.setPower(0.8);
         
-        RobotMap.frontRightDrive.setTargetPosition(targetR);
+        RobotMap.frontRightDrive.setTargetPosition(-targetR);
         RobotMap.frontRightDrive.setPower(0.8);
+
+        //hold the program until drive for ticks is done!
+        while (!isDriveForTicksDone()){
+        }
+    }
+
+    private boolean isDriveForTicksDone(){
+        int tolerance = 20;
+        int errorL = (RobotMap.frontLeftDrive.getTargetPosition() - RobotMap.frontLeftDrive.getCurrentPosition());
+        int errorR = (RobotMap.frontRightDrive.getTargetPosition() - RobotMap.frontRightDrive.getCurrentPosition());
+
+        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance);
     }
 
     //region TurnToAnglePID
-    private double ANGLEPID_Kp = 0.333, ANGLEPID_Ki = 0, ANGLEPID_Kd = 0;
+    private double ANGLEPID_Kp = 0.5, ANGLEPID_Ki = 0, ANGLEPID_Kd = 0;
     private double ANGLEPID_targetAngle = 0, ANGLEPID_previousError, ANGLEPID_integral = 0, ANGLEPID_MinAcceptableRange = -10, ANGLEPID_MaxAcceptableRange = 10;
     private boolean ANGLEPID_Active = false;
 
     public void TurnToAngle(double targetAngle) /*throws InterruptedException*/ {
-        ANGLEPID_targetAngle = targetAngle;
+        ANGLEPID_targetAngle = RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle + targetAngle;
         RobotMap.SetDriveModeNoEncoders();
         ANGLEPID_Active = true;
 
         //reset the integral
         ANGLEPID_integral = 0;
 
-        do {
-            double dt = ElapsedTimer.milliseconds();
-            ANGLEPID_Active = AnglePID(dt);
-            //wait(20);
-            ElapsedTimer.reset();
-        } while (ANGLEPID_Active);
+        StopWatch timer = new StopWatch(20);
 
-        /*synchronized (SyncObject){
-            SyncObject.notify();
-        }*/
+        do {
+            if(timer.isExpired()){
+                double dt = ElapsedTimer.milliseconds();
+                ANGLEPID_Active = AnglePID(dt);
+                ElapsedTimer.reset();
+                timer.reset();
+            }
+        } while (ANGLEPID_Active);
     }
 
     private boolean AnglePID(double dt) {
-        double currentAngle = RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle;
+        double currentAngle = RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
         double error = ANGLEPID_targetAngle - currentAngle;
         ANGLEPID_integral = ANGLEPID_integral + error * dt;
         double derivative = (error - ANGLEPID_previousError) / dt;
@@ -160,6 +172,30 @@ public class AutonomousPrimeRobotCommands {
         RobotMap.rightClamFoot.setPower(0);
         clamFootStopWatch.reset();
     }
+
+    public void ClamFeetForTicks(int targetL, int targetR) {
+        RobotMap.ResetClimbEncoders();
+        RobotMap.SetClimbModeEncoders();
+
+        RobotMap.rightClamFoot.setTargetPosition(targetL);
+        RobotMap.rightClamFoot.setPower(0.7);
+
+        RobotMap.leftClamFoot.setTargetPosition(targetR);
+        RobotMap.leftClamFoot.setPower(0.7);
+
+        //hold until it is done
+        while (!isClimbFeetForTicksDone()){
+
+        }
+    }
+
+    private boolean isClimbFeetForTicksDone(){
+        int tolerance = 20;
+        int errorR = (RobotMap.rightClamFoot.getTargetPosition() - RobotMap.rightClamFoot.getCurrentPosition());
+        int errorL = (RobotMap.leftClamFoot.getTargetPosition() - RobotMap.leftClamFoot.getCurrentPosition());
+
+        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance);
+    }
     //endregion
 
     //region Manual Commands
@@ -170,19 +206,15 @@ public class AutonomousPrimeRobotCommands {
     }
     //endregion
 
-    //region PID Commands
-
-    //endregion
-
     //endregion
 
     //region Climb Hook
     public void OpenHook(){
-        RobotMap.climbHook.setPosition(180);
+        RobotMap.climbHook.setPosition(-1);
     }
 
     public void CloseHook(){
-        RobotMap.climbHook.setPosition(0);
+        RobotMap.climbHook.setPosition(1);
     }
     //endregion
 }

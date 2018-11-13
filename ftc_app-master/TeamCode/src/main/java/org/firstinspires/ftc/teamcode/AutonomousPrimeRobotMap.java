@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import java.util.Set;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,13 +23,13 @@ public class AutonomousPrimeRobotMap {
 
     public DriveMode driveMode = DriveMode.Run_Without_Encoders;
 
-    public DcMotor frontLeftDrive;
-    public DcMotor frontRightDrive;
-    public DcMotor rearLeftDrive;
-    public DcMotor rearRightDrive;
+    public DcMotorEx frontLeftDrive;
+    public DcMotorEx frontRightDrive;
+    public DcMotorEx rearLeftDrive;
+    public DcMotorEx rearRightDrive;
 
-    public DcMotor leftClamFoot;
-    public DcMotor rightClamFoot;
+    public DcMotorEx leftClamFoot;
+    public DcMotorEx rightClamFoot;
 
     public Servo climbHook;
     
@@ -41,10 +42,10 @@ public class AutonomousPrimeRobotMap {
 
         //region Drive Base
 
-        frontLeftDrive  = hardwareMap.get(DcMotor.class, "1:0");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "1:1");
-        rearLeftDrive = hardwareMap.get(DcMotor.class, "1:2");
-        rearRightDrive = hardwareMap.get(DcMotor.class, "1:3");
+        frontLeftDrive  = hardwareMap.get(DcMotorEx.class, "1:0");
+        frontRightDrive = hardwareMap.get(DcMotorEx.class, "1:1");
+        rearLeftDrive = hardwareMap.get(DcMotorEx.class, "1:2");
+        rearRightDrive = hardwareMap.get(DcMotorEx.class, "1:3");
         
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -53,7 +54,7 @@ public class AutonomousPrimeRobotMap {
         
         SetDriveModeNoEncoders();
         
-        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         rearLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         rearRightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -61,8 +62,8 @@ public class AutonomousPrimeRobotMap {
         //endregion
 
         //region Clam Feet
-        leftClamFoot = hardwareMap.get(DcMotor.class, "2:1");
-        rightClamFoot = hardwareMap.get(DcMotor.class, "2:2");
+        leftClamFoot = hardwareMap.get(DcMotorEx.class, "2:0");
+        rightClamFoot = hardwareMap.get(DcMotorEx.class, "2:1");
 
         leftClamFoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightClamFoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -71,7 +72,7 @@ public class AutonomousPrimeRobotMap {
         rightClamFoot.setDirection(DcMotor.Direction.REVERSE);
         //endregion
 
-        climbHook = hardwareMap.get(Servo.class, "Servo1:1");
+        climbHook = hardwareMap.get(Servo.class, "Servo2:0");
         
         initIMU();
     }
@@ -80,8 +81,8 @@ public class AutonomousPrimeRobotMap {
     public void Loop() {
         //if the drive mode is encoders then mirror the rear motors so that we just use the encoders of the front motors
         if(driveMode == DriveMode.Run_With_Encoders){
-            rearLeftDrive.setPower(frontLeftDrive.getPower());
-            rearRightDrive.setPower(frontRightDrive.getPower());
+            rearLeftDrive.setVelocity(frontLeftDrive.getVelocity());
+            rearRightDrive.setVelocity(frontRightDrive.getVelocity());
         }
     }
     
@@ -120,5 +121,20 @@ public class AutonomousPrimeRobotMap {
         
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+    }
+
+    public void ResetClimbEncoders() {
+        leftClamFoot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightClamFoot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void SetClimbModeEncoders() {
+       leftClamFoot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+       rightClamFoot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void SetClimbModeNoEncoders() {
+        leftClamFoot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightClamFoot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
