@@ -20,6 +20,6 @@ public class DropHang {
 
         robotCommands.ClamFeetForTicks(-4100, -4100);
 
-        Halt.Hold(50);
+        Halt.Hold(100);
     }
 }

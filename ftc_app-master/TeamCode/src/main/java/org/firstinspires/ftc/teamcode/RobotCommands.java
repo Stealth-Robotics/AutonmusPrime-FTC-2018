@@ -185,7 +185,6 @@ public class RobotCommands {
 
         //hold until it is done
         while (!isClimbFeetForTicksDone()){
-
         }
     }
 
