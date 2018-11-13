@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.AutonomousPrimeRobotCommands;
+import org.firstinspires.ftc.teamcode.Commands.TelemetryLog;
 
 @TeleOp(name="TELEOP Main", group="Iterative Opmode")
 
@@ -73,10 +74,9 @@ public class Teleop_Main extends OpMode {
         }
         //endregion
 
-        telemetry.addData("Encoder_FR", robotCommands.RobotMap.frontRightDrive.getCurrentPosition());
-        telemetry.addData("Encoder_FL", robotCommands.RobotMap.frontLeftDrive.getCurrentPosition());
-        telemetry.addData("CurrentAngle", robotCommands.RobotMap.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
-        telemetry.addData("HookPosition", robotCommands.RobotMap.climbHook.getPosition());
+        //region Telemetry
+        TelemetryLog.Run(robotCommands, telemetry);
+        //region Telemetry
 
         //call the loop function on the robot map
         robotCommands.RobotMap.Loop();
