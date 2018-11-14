@@ -113,9 +113,13 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
                     if (updatedRecognitions != null) {
                       telemetry.addData("# Object Detected", updatedRecognitions.size());
                       if (updatedRecognitions.size() == 3) {
+
+                        //init vars to -1
                         int goldMineralX = -1;
                         int silverMineral1X = -1;
                         int silverMineral2X = -1;
+
+                        //foreach object recognised set its x (getLeft) to the correct value
                         for (Recognition recognition : updatedRecognitions) {
                           if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                             goldMineralX = (int) recognition.getLeft();
@@ -125,6 +129,8 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
                             silverMineral2X = (int) recognition.getLeft();
                           }
                         }
+
+                        //based on where the gold is relative to silver minerals return the correct value
                         if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                           if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Left");
