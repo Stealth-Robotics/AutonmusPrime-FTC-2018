@@ -199,6 +199,7 @@ public class RobotCommands {
 
     //region Manual Commands
     public void ClimbFeetDrive(double leftPower, double rightPower){
+        RobotMap.SetClimbModeNoEncoders();
 
         RobotMap.leftClamFoot.setPower(leftPower);
         RobotMap.rightClamFoot.setPower(rightPower);
