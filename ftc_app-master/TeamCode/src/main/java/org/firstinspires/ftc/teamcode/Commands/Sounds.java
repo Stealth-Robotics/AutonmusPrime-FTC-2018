@@ -4,13 +4,8 @@ import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Sounds {
-    HardwareMap hardwareMap;
 
-    public Sounds(HardwareMap hw){
-        hardwareMap = hw;
-    }
-
-    public void PlayAutobotsRollOut(){
+    public static void PlayAutobotsRollOut(HardwareMap hardwareMap){
 
         // Determine Resource IDs for sounds built into the RC application.
         int AutobotsRollOutID = hardwareMap.appContext.getResources().getIdentifier("autobots-RollOut", "raw", hardwareMap.appContext.getPackageName());

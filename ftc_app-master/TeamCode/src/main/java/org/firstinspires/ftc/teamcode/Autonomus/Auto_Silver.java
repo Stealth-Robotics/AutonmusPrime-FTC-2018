@@ -32,8 +32,7 @@ public class Auto_Silver extends OpMode {
     @Override
     public  void start() {
         //play autobots roll out sound
-        Sounds sounds = new Sounds(hardwareMap);
-        sounds.PlayAutobotsRollOut();
+        Sounds.PlayAutobotsRollOut(hardwareMap);
 
         DropHang.Run(robotCommands);
 
