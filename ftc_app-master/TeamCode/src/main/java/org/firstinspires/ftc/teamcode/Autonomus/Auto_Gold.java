@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralCKnoc
 import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralLKnockOff_G;
 import org.firstinspires.ftc.teamcode.Commands.MineralPositionDetection;
 import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralRKnockOff_G;
+import org.firstinspires.ftc.teamcode.Commands.Sounds;
 import org.firstinspires.ftc.teamcode.RobotCommands;
 import org.firstinspires.ftc.teamcode.Commands.DropHang;
 import org.firstinspires.ftc.teamcode.Commands.TelemetryLog;
@@ -30,6 +31,9 @@ public class Auto_Gold extends OpMode {
 
     @Override
     public  void start() {
+        //play autobots roll out sound
+        Sounds sounds = new Sounds(hardwareMap);
+        sounds.PlayAutobotsRollOut();
 
         DropHang.Run(robotCommands);
 
