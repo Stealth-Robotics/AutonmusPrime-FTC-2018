@@ -81,9 +81,14 @@ public class MineralPositionDetection {
      * Initialize the Tensor Flow Object Detection engine.
      */
     private void initTfod() {
+        //get camera viewId to display stuffs
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        //increase the minimum confidence for objects from the 0.4 default
+        tfodParameters.minimumConfidence = 0.65f;
+
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
@@ -144,14 +149,14 @@ public class MineralPositionDetection {
 
         MineralPosition position = null;
 
-        /** Activate Tensor Flow Object Detection. */
+        // Activate Tensor Flow Object Detection.
         tfod.activate();
 
         while (position == null){
             position = GetMaterialPos();
         }
 
-        /** Shutdown Tensor Flow Object Detection. */
+        // Shutdown Tensor Flow Object Detection.
         tfod.shutdown();
 
         return position;
