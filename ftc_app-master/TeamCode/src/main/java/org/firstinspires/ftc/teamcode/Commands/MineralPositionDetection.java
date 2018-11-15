@@ -8,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
+import org.firstinspires.ftc.teamcode.Utils.StopWatch;
 
 import java.util.List;
 
@@ -152,9 +153,14 @@ public class MineralPositionDetection {
         // Activate Tensor Flow Object Detection.
         tfod.activate();
 
-        while (position == null){
+        StopWatch timer = new StopWatch(5000);
+        //int i = 0;
+
+        while (position == null || timer.isExpired()){
             position = GetMaterialPos();
+            Thread.yield();
         }
+
 
         // Shutdown Tensor Flow Object Detection.
         tfod.shutdown();

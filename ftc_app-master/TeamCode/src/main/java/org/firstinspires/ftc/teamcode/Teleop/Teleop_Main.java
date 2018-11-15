@@ -14,7 +14,7 @@ public class Teleop_Main extends OpMode {
     
     @Override
     public void init() {
-        robotCommands = new RobotCommands(hardwareMap);
+        robotCommands = new RobotCommands(hardwareMap, telemetry);
     }
     
     @Override

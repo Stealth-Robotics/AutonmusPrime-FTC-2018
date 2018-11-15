@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -13,9 +14,13 @@ public class RobotCommands {
     public org.firstinspires.ftc.teamcode.RobotMap RobotMap;
     //public Object SyncObject;
     private ElapsedTime ElapsedTimer;
-    
-    public RobotCommands(HardwareMap HwMap) {
-        
+
+    public Telemetry telemetry;
+
+    public RobotCommands(HardwareMap HwMap, Telemetry tel) {
+
+        telemetry = tel;
+
         RobotMap = new RobotMap(HwMap);
 
         ElapsedTime.Resolution res = com.qualcomm.robotcore.util.ElapsedTime.Resolution.MILLISECONDS;
@@ -92,17 +97,21 @@ public class RobotCommands {
         RobotMap.frontRightDrive.setTargetPosition(-targetR);
         RobotMap.frontRightDrive.setPower(0.8);
 
+        StopWatch timer = new StopWatch(3000);
+
         //hold the program until drive for ticks is done!
-        while (!isDriveForTicksDone()){
+        while (!isDriveForTicksDone(timer)){
         }
     }
 
-    private boolean isDriveForTicksDone(){
-        int tolerance = 20;
+
+
+    private boolean isDriveForTicksDone(StopWatch timer){
+        int tolerance = 100;
         int errorL = (RobotMap.frontLeftDrive.getTargetPosition() - RobotMap.frontLeftDrive.getCurrentPosition());
         int errorR = (RobotMap.frontRightDrive.getTargetPosition() - RobotMap.frontRightDrive.getCurrentPosition());
 
-        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance);
+        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance) || timer.isExpired();
     }
 
     //region TurnToAnglePID
@@ -183,17 +192,19 @@ public class RobotCommands {
         RobotMap.leftClamFoot.setTargetPosition(targetR);
         RobotMap.leftClamFoot.setPower(0.8);
 
+        StopWatch timer = new StopWatch(10000);
+
         //hold until it is done
-        while (!isClimbFeetForTicksDone()){
+        while (!isClimbFeetForTicksDone(timer)){
         }
     }
 
-    private boolean isClimbFeetForTicksDone(){
-        int tolerance = 20;
+    private boolean isClimbFeetForTicksDone(StopWatch timer){
+        int tolerance = 100;
         int errorR = (RobotMap.rightClamFoot.getTargetPosition() - RobotMap.rightClamFoot.getCurrentPosition());
         int errorL = (RobotMap.leftClamFoot.getTargetPosition() - RobotMap.leftClamFoot.getCurrentPosition());
 
-        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance);
+        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance) || timer.isExpired();
     }
     //endregion
 

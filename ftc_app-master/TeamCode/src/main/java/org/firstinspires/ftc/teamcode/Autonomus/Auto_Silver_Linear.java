@@ -30,15 +30,17 @@
 package org.firstinspires.ftc.teamcode.Autonomus;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Commands.DropHang;
+import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralCKnockOff_S;
+import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralLKnockOff_S;
+import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralRKnockOff_S;
 import org.firstinspires.ftc.teamcode.Commands.MineralPositionDetection;
 import org.firstinspires.ftc.teamcode.Commands.Sounds;
+import org.firstinspires.ftc.teamcode.Commands.TelemetryLog;
+import org.firstinspires.ftc.teamcode.RobotCommands;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 
 
@@ -55,17 +57,20 @@ import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Mineral Position Detector", group="Linear Opmode")
+@Autonomous(name="Auto Gold Linear", group="Linear Opmode")
 //@Disabled
-public class MineralPositionDetection_Tester extends LinearOpMode {
+public class Auto_Silver_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    private RobotCommands robotCommands;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+        robotCommands = new RobotCommands(hardwareMap, telemetry);
 
         //used to detect witch position the cube is in!
         MineralPositionDetection minPosDector = new MineralPositionDetection(hardwareMap, telemetry);
@@ -78,13 +83,31 @@ public class MineralPositionDetection_Tester extends LinearOpMode {
         //play autobots roll out sound
         Sounds.PlayAutobotsRollOut(hardwareMap);
 
-        //get the position!
+        DropHang.Run(robotCommands);
+
+        robotCommands.DriveForTicks(2000, 2000);
+
+        //detect witch position the cube is in!
         MineralPosition minPos;
         minPos = minPosDector.Run();
 
+        //run the correct code to go the the correct spot and move the cube off
+        if(minPos == MineralPosition.Left){
+            MineralLKnockOff_S.Run(robotCommands);
+        } else if(minPos == MineralPosition.Center){
+            MineralCKnockOff_S.Run(robotCommands);
+        } else {
+            MineralRKnockOff_S.Run(robotCommands);
+        }
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            TelemetryLog.Run(robotCommands, telemetry);
             telemetry.update();
+            //call the loop function on the robot map
+            robotCommands.RobotMap.Loop();
         }
+
+        robotCommands.KillDriveMotorPower();
     }
 }

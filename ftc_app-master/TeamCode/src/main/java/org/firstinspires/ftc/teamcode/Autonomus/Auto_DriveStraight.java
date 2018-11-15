@@ -17,7 +17,7 @@ public class Auto_DriveStraight extends OpMode {
     
     @Override
     public void init() {
-        robotCommands = new RobotCommands(hardwareMap);
+        robotCommands = new RobotCommands(hardwareMap, telemetry);
     }
     
     @Override
