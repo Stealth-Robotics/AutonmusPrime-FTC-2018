@@ -97,21 +97,23 @@ public class RobotCommands {
         RobotMap.frontRightDrive.setTargetPosition(-targetR);
         RobotMap.frontRightDrive.setPower(0.8);
 
-        StopWatch timer = new StopWatch(3000);
-
         //hold the program until drive for ticks is done!
-        while (!isDriveForTicksDone(timer)){
+        while (!isDriveForTicksDone()){
+            //call the loop function on the robot map
+            RobotMap.Loop();
         }
+
+        KillDriveMotorPower();
     }
 
 
 
-    private boolean isDriveForTicksDone(StopWatch timer){
-        int tolerance = 100;
+    private boolean isDriveForTicksDone(){
+        int tolerance = 40;
         int errorL = (RobotMap.frontLeftDrive.getTargetPosition() - RobotMap.frontLeftDrive.getCurrentPosition());
         int errorR = (RobotMap.frontRightDrive.getTargetPosition() - RobotMap.frontRightDrive.getCurrentPosition());
 
-        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance) || timer.isExpired();
+        return (errorL >= -tolerance && errorL <= tolerance) && (errorR >= -tolerance && errorR <= tolerance);
     }
 
     //region TurnToAnglePID
@@ -192,19 +194,19 @@ public class RobotCommands {
         RobotMap.leftClamFoot.setTargetPosition(targetR);
         RobotMap.leftClamFoot.setPower(0.8);
 
-        StopWatch timer = new StopWatch(10000);
-
         //hold until it is done
-        while (!isClimbFeetForTicksDone(timer)){
+        while (!isClimbFeetForTicksDone()){
+            //call the loop function on the robot map
+            RobotMap.Loop();
         }
     }
 
-    private boolean isClimbFeetForTicksDone(StopWatch timer){
-        int tolerance = 100;
+    private boolean isClimbFeetForTicksDone(){
+        int tolerance = 40;
         int errorR = (RobotMap.rightClamFoot.getTargetPosition() - RobotMap.rightClamFoot.getCurrentPosition());
         int errorL = (RobotMap.leftClamFoot.getTargetPosition() - RobotMap.leftClamFoot.getCurrentPosition());
 
-        return (errorL >= tolerance && errorL <= tolerance) && (errorR >= tolerance && errorR <= tolerance) || timer.isExpired();
+        return (errorL >= -tolerance && errorL <= tolerance) && (errorR >= -tolerance && errorR <= tolerance);
     }
     //endregion
 

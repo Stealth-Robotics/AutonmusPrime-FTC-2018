@@ -80,7 +80,7 @@ public class MineralPositionDetection_Tester extends LinearOpMode {
 
         //get the position!
         MineralPosition minPos;
-        minPos = minPosDector.Run();
+        minPos = minPosDector.run();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

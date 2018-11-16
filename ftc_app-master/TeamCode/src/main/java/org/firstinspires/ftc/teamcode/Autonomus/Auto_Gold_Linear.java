@@ -43,6 +43,10 @@ import org.firstinspires.ftc.teamcode.Commands.TelemetryLog;
 import org.firstinspires.ftc.teamcode.RobotCommands;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -85,11 +89,10 @@ public class Auto_Gold_Linear extends LinearOpMode {
 
         DropHang.Run(robotCommands);
 
-        robotCommands.DriveForTicks(2000, 2000);
+        //robotCommands.DriveForTicks(2000, 2000);
 
         //detect witch position the cube is in!
-        MineralPosition minPos;
-        minPos = minPosDector.Run();
+        MineralPosition minPos = minPosDector.run();/*minPosDector.Run();*/
 
         //run the correct code to go the the correct spot and move the cube off
         if(minPos == MineralPosition.Left){
@@ -104,8 +107,6 @@ public class Auto_Gold_Linear extends LinearOpMode {
         while (opModeIsActive()) {
             TelemetryLog.Run(robotCommands, telemetry);
             telemetry.update();
-            //call the loop function on the robot map
-            robotCommands.RobotMap.Loop();
         }
 
         robotCommands.KillDriveMotorPower();

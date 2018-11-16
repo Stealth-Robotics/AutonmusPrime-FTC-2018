@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 import org.firstinspires.ftc.teamcode.Utils.StopWatch;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class MineralPositionDetection {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
@@ -142,8 +143,7 @@ public class MineralPositionDetection {
         return null;
     }
 
-    public MineralPosition Run(){
-
+    public MineralPosition run() {
         if (tfod == null) {
             return null;
         }

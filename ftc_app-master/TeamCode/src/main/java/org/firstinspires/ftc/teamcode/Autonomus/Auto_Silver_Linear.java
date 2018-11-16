@@ -57,7 +57,7 @@ import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto Gold Linear", group="Linear Opmode")
+@Autonomous(name="Auto Silver Linear", group="Linear Opmode")
 //@Disabled
 public class Auto_Silver_Linear extends LinearOpMode {
 
@@ -85,11 +85,11 @@ public class Auto_Silver_Linear extends LinearOpMode {
 
         DropHang.Run(robotCommands);
 
-        robotCommands.DriveForTicks(2000, 2000);
+        //robotCommands.DriveForTicks(2000, 2000);
 
         //detect witch position the cube is in!
         MineralPosition minPos;
-        minPos = minPosDector.Run();
+        minPos = minPosDector.run();
 
         //run the correct code to go the the correct spot and move the cube off
         if(minPos == MineralPosition.Left){
@@ -104,8 +104,6 @@ public class Auto_Silver_Linear extends LinearOpMode {
         while (opModeIsActive()) {
             TelemetryLog.Run(robotCommands, telemetry);
             telemetry.update();
-            //call the loop function on the robot map
-            robotCommands.RobotMap.Loop();
         }
 
         robotCommands.KillDriveMotorPower();
