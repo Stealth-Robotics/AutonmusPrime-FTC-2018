@@ -16,6 +16,10 @@ public class RobotMap {
     
     private HardwareMap hardwareMap;
 
+    public HardwareMap getHardwareMap() {
+        return hardwareMap;
+    }
+
     public enum DriveMode{
         Run_With_Encoders,
         Run_Without_Encoders

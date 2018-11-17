@@ -3,18 +3,21 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.RobotCommands;
-import org.firstinspires.ftc.teamcode.Commands.TelemetryLog;
+import org.firstinspires.ftc.teamcode.Commands.TelemetryLogger;
+import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.RobotMap;
+import org.firstinspires.ftc.teamcode.Systems.ClimbFeet;
+import org.firstinspires.ftc.teamcode.Systems.ClimbHook;
+import org.firstinspires.ftc.teamcode.Systems.DriveBase;
 
 @TeleOp(name="TELEOP Main", group="Iterative Opmode")
 
 public class Teleop_Main extends OpMode {
-
-    private RobotCommands robotCommands;
     
     @Override
     public void init() {
-        robotCommands = new RobotCommands(hardwareMap, telemetry);
+        Robot.getInstance().setTelemetry(telemetry);
+        Robot.getInstance().setRobotMap(new RobotMap(hardwareMap));
     }
     
     @Override
@@ -24,7 +27,7 @@ public class Teleop_Main extends OpMode {
 
     @Override
     public void start() {
-        robotCommands.OpenHook();
+        ClimbHook.OpenHook();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class Teleop_Main extends OpMode {
                 drive  = -gamepad1.right_trigger;
             }
 
-            robotCommands.POVDrive(gamepad1.left_stick_x, drive);
+            DriveBase.POVDrive(gamepad1.left_stick_x, drive);
         //endregion
 
         //region Climb Feet Drive
@@ -60,32 +63,32 @@ public class Teleop_Main extends OpMode {
                 right = 0.0;
             }
 
-            robotCommands.ClimbFeetDrive(-left, -right);
+            ClimbFeet.ClimbFeetDrive(-left, -right);
         //endregion
 
         //region Climb Hook
             if(gamepad2.a){
-                robotCommands.OpenHook();
+                ClimbHook.OpenHook();
             }
 
             if(gamepad2.b){
-                robotCommands.CloseHook();
+                ClimbHook.CloseHook();
             }
         //endregion
 
         //region Telemetry
-            TelemetryLog.Run(robotCommands, telemetry);
+            TelemetryLogger tm = new TelemetryLogger();
+            tm.Run(-1);
         //endregion
 
-
         //call the loop function on the robot map
-        robotCommands.RobotMap.Loop();
+        Robot.getInstance().getRobotMap().Loop();
     }
 
     
     
     @Override
     public void stop() {
-        robotCommands.KillDriveMotorPower();
+        DriveBase.KillDriveMotorPower();
     }
 }
