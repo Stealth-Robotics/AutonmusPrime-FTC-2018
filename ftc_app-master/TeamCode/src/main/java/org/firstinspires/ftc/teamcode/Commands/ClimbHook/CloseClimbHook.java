@@ -5,9 +5,9 @@ import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class CloseClimbHook implements iCommand {
 
-    private boolean isDone = false;
-
     private int runSequence;
+
+    private int timer = 500;
 
     public CloseClimbHook(int _runSequence){
         runSequence = _runSequence;
@@ -18,14 +18,14 @@ public class CloseClimbHook implements iCommand {
     }
 
     public void Run(double dt){
-        isDone = true;
+        timer -= dt;
     }
 
     public void Stop(){
     }
 
     public boolean IsDone(){
-        return isDone;
+        return timer <= 0;
     }
 
     public int GetRunSequence(){

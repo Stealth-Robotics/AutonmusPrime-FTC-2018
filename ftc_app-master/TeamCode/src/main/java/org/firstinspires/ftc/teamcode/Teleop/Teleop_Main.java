@@ -27,7 +27,6 @@ public class Teleop_Main extends OpMode {
 
     @Override
     public void start() {
-        ClimbHook.OpenHook();
     }
 
     @Override
@@ -84,8 +83,6 @@ public class Teleop_Main extends OpMode {
         //call the loop function on the robot map
         Robot.getInstance().getRobotMap().Loop();
     }
-
-    
     
     @Override
     public void stop() {

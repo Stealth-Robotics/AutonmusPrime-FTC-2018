@@ -7,41 +7,31 @@ import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class MineralCenterPath implements iCommand {
-    private boolean isDone = false;
-
     private int runSequence;
 
-    private CommandManager commandManager;
+    private CommandManager CommandManager;
 
     public MineralCenterPath(int _runSequence){
         runSequence = _runSequence;
-        commandManager = new CommandManager();
+        CommandManager = new CommandManager();
     }
 
     public void Init() {
-        //TODO: Check this logic when i am not super tired! \/
-        if(Robot.getInstance().getMineralPosition() != MineralPosition.Center || Robot.getInstance().getMineralPosition() != MineralPosition.Unidentified){
-            isDone = true;
-            return;
-        }
+        CommandManager.AddCommand(new DriveForTicks(1, 1000, 1000));
 
-        commandManager.AddCommand(new DriveForTicks(1, 1000, 1000));
+        CommandManager.Start();
     }
 
     public void Run(double dt) {
-        commandManager.Run();
-
-        if(commandManager.isFinished()){
-            isDone = true;
-        }
-
+        CommandManager.Run();
     }
 
     public void Stop() {
+        CommandManager.Stop();
     }
 
     public boolean IsDone() {
-        return isDone;
+        return (CommandManager.isFinished() || Robot.getInstance().getMineralPosition() != MineralPosition.Center);
     }
 
     public int GetRunSequence() {

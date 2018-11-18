@@ -12,6 +12,12 @@ public class TelemetryLogger implements iConstantCommand {
     }
 
     public void Run(double dt){
+        Robot.getInstance().getTelemetry().addData("Elapsed Time", dt);
+
+        if(Robot.getInstance().getMineralPosition() != null){
+            Robot.getInstance().getTelemetry().addData("Cube Position", Robot.getInstance().getMineralPosition().toString());
+        }
+
         Robot.getInstance().getTelemetry().addData("Encoder_FR", Robot.getInstance().getRobotMap().frontRightDrive.getCurrentPosition());
         Robot.getInstance().getTelemetry().addData("Encoder_FL", Robot.getInstance().getRobotMap().frontLeftDrive.getCurrentPosition());
 
@@ -20,6 +26,8 @@ public class TelemetryLogger implements iConstantCommand {
 
         Robot.getInstance().getTelemetry().addData("CurrentAngle", Robot.getInstance().getRobotMap().imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         Robot.getInstance().getTelemetry().addData("HookPosition", Robot.getInstance().getRobotMap().climbHook.getPosition());
+
+
 
         Robot.getInstance().getTelemetry().update();
     }

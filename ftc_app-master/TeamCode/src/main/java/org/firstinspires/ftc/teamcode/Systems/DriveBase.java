@@ -46,8 +46,8 @@ public class DriveBase {
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
-        double frontWheelPowerPercent = 1;
-        double rearWheelPowerPercent = 0.6;
+        double frontWheelPowerPercent = 0.7;
+        double rearWheelPowerPercent = 1;
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.

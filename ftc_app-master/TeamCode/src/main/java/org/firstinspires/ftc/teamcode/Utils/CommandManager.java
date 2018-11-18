@@ -21,42 +21,55 @@ public class CommandManager {
     private ElapsedTime elapsedTime;
 
     public CommandManager(){
-        elapsedTime = new ElapsedTime();
+        elapsedTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         Commands = new ArrayList<>();
         ActiveCommands = new ArrayList<>();
         ConstantCommands = new ArrayList<>();
     }
 
+    public void Start() {
+        elapsedTime.reset();
+    }
+
     public void Run() {
         Robot.getInstance().getTelemetry().addData("Active Command", CurrentRunId);
-        //run linear commands
-        if(ActiveCommands.size() != 0){
-            for (int i = 0; i < ActiveCommands.size(); i++) {
-                iCommand command = ActiveCommands.get(i);
 
-                if(command.IsDone()) {
+        //run constant commands
+        for (int i = 0; i < ConstantCommands.size(); i++){
+            ConstantCommands.get(i).Run(elapsedTime.milliseconds());
+        }
+
+        //run/init linear commands
+        if(!ActiveCommands.isEmpty()){
+
+            List<iCommand> CommandsToRemove = new ArrayList<>();
+            //check for commands that are done, tell them to stop and add them to Commands to remove list
+            for (iCommand command : ActiveCommands) {
+                if (command.IsDone()) {
                     command.Stop();
-                    ActiveCommands.remove(ActiveCommands.get(i));
-                } else {
-                    command.Run(elapsedTime.milliseconds());
+                    //ActiveCommands.remove(command);
+                    CommandsToRemove.add(command);
                 }
+            }
+            //remove all the commands that are now done as they are in commands to remove
+            ActiveCommands.removeAll(CommandsToRemove);
+
+            //run commands that are still active
+            for (iCommand command : ActiveCommands) {
+                command.Run(elapsedTime.milliseconds());
             }
         } else if(CurrentRunId + 1 <= MaxRunId){
             CurrentRunId++;
-            for (int i = 0; i < Commands.size(); i++){
-                iCommand command = Commands.get(i);
+            //loop through all the commands and if the command run id matches current run id then init it and add it to active commands
+            for (iCommand command : Commands){
                 if (command.GetRunSequence() == CurrentRunId){
                     command.Init();
                     ActiveCommands.add(command);
                 }
             }
         } else {
+            //there are no more commands to run so we are done here!
             isFinished = true;
-        }
-
-        //run constant commands
-        for (int i = 0; i < ConstantCommands.size(); i++){
-            ConstantCommands.get(i).Run(elapsedTime.milliseconds());
         }
 
         elapsedTime.reset();
@@ -66,7 +79,6 @@ public class CommandManager {
         if(command.GetRunSequence() > MaxRunId){
             MaxRunId = command.GetRunSequence();
         }
-
         Commands.add(command);
     }
 
@@ -78,5 +90,10 @@ public class CommandManager {
         return isFinished;
     }
 
-
+    public void Stop(){
+        //stop all of the active commands
+        for (iCommand command : ActiveCommands) {
+            command.Stop();
+        }
+    }
 }

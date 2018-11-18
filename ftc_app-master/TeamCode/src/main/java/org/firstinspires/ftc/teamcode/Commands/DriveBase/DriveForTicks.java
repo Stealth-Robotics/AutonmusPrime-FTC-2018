@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class DriveForTicks implements iCommand {
-    private boolean isDone = false;
 
     private int timer = 5000;
     private int runSequence;
@@ -19,6 +18,13 @@ public class DriveForTicks implements iCommand {
         runSequence = _runSequence;
         targetL = _targetL;
         targetR = _targetR;
+    }
+
+    public DriveForTicks(int _runSequence, int _targetL, int _targetR, int _timer){
+        runSequence = _runSequence;
+        targetL = _targetL;
+        targetR = _targetR;
+        timer = _timer;
     }
 
     public void Init() {
@@ -34,11 +40,6 @@ public class DriveForTicks implements iCommand {
 
     public void Run(double dt) {
         timer -= dt;
-
-        if(isDriveForTicksDone() || timer <= 0){
-            isDone = true;
-        }
-
     }
 
     private boolean isDriveForTicksDone(){
@@ -54,7 +55,7 @@ public class DriveForTicks implements iCommand {
     }
 
     public boolean IsDone() {
-        return isDone;
+        return (isDriveForTicksDone() || timer <= 0);
     }
 
     public int GetRunSequence() {

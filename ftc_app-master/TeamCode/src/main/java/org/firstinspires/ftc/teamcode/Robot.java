@@ -1,19 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.Systems.DriveBase;
+import org.firstinspires.ftc.teamcode.Systems.ClimbHook;
 import org.firstinspires.ftc.teamcode.Utils.AutoPosition;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
-import org.firstinspires.ftc.teamcode.Utils.StopWatch;
 
 public class Robot {
 
@@ -43,6 +35,8 @@ public class Robot {
 
     public void setRobotMap(org.firstinspires.ftc.teamcode.RobotMap _robotMap) {
         robotMap = _robotMap;
+
+        ClimbHook.CloseHook();
     }
     //endregion robotMap
 
@@ -65,8 +59,8 @@ public class Robot {
         return mineralPosition;
     }
 
-    public void setMineralPosition(MineralPosition mineralPosition) {
-        this.mineralPosition = mineralPosition;
+    public void setMineralPosition(MineralPosition _mineralPosition) {
+        mineralPosition = _mineralPosition;
     }
     //endregion mineralPosition
 

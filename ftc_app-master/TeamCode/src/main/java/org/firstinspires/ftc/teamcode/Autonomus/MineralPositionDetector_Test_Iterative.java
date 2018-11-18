@@ -7,7 +7,9 @@ import org.firstinspires.ftc.teamcode.Commands.MineralPositionDetection;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.RobotMap;
 import org.firstinspires.ftc.teamcode.Systems.DriveBase;
+import org.firstinspires.ftc.teamcode.Utils.AutoPosition;
 import org.firstinspires.ftc.teamcode.Utils.CommandManager;
+import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 
 @Autonomous(name="Mineral Position Detector Iterative", group="Iterative Opmode")
 
@@ -19,6 +21,8 @@ public class MineralPositionDetector_Test_Iterative extends OpMode {
     public void init() {
         Robot.getInstance().setTelemetry(telemetry);
         Robot.getInstance().setRobotMap(new RobotMap(hardwareMap));
+        Robot.getInstance().setAutoPosition(AutoPosition.Gold);
+        Robot.getInstance().setMineralPosition(MineralPosition.Unidentified);
 
         commandManager = new CommandManager();
 
@@ -32,7 +36,7 @@ public class MineralPositionDetector_Test_Iterative extends OpMode {
 
     @Override
     public void start() {
-
+        commandManager.Start();
     }
 
     @Override
@@ -40,12 +44,6 @@ public class MineralPositionDetector_Test_Iterative extends OpMode {
         commandManager.Run();
 
         Robot.getInstance().getRobotMap().Loop();
-
-        if(Robot.getInstance().getMineralPosition() != null){
-            Robot.getInstance().getTelemetry().addData("Cube Position", Robot.getInstance().getMineralPosition().toString());
-        }
-
-        Robot.getInstance().getTelemetry().update();
     }
 
     
@@ -53,5 +51,6 @@ public class MineralPositionDetector_Test_Iterative extends OpMode {
     @Override
     public void stop() {
         DriveBase.KillDriveMotorPower();
+        commandManager.Stop();
     }
 }

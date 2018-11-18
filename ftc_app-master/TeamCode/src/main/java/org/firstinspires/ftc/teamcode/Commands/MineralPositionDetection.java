@@ -86,7 +86,7 @@ public class MineralPositionDetection implements iCommand {
 
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         //increase the minimum confidence for objects from the 0.4 default
-        tfodParameters.minimumConfidence = 0.4f;
+        tfodParameters.minimumConfidence = 0.3f;
 
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, Robot.getInstance().getVuforia());
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);

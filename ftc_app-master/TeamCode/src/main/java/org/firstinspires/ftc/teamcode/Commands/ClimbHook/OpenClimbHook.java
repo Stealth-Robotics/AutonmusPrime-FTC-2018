@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.Commands.ClimbHook;
 
-import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.Systems.ClimbHook;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class OpenClimbHook implements iCommand {
 
-    private boolean isDone = false;
-
     private int runSequence;
+
+    private int timer = 500;
 
     public OpenClimbHook(int _runSequence){
         runSequence = _runSequence;
@@ -19,14 +18,14 @@ public class OpenClimbHook implements iCommand {
     }
 
     public void Run(double dt){
-        isDone = true;
+        timer -= dt;
     }
 
     public void Stop(){
     }
 
     public boolean IsDone(){
-        return isDone;
+        return timer <= 0;
     }
 
     public int GetRunSequence(){

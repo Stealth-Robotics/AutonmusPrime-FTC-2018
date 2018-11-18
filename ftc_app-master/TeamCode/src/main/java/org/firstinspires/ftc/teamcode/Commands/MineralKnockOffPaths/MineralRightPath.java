@@ -7,8 +7,6 @@ import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class MineralRightPath implements iCommand {
-    private boolean isDone = false;
-
     private int runSequence;
 
     private CommandManager commandManager;
@@ -19,28 +17,21 @@ public class MineralRightPath implements iCommand {
     }
 
     public void Init() {
-        if(Robot.getInstance().getMineralPosition() != MineralPosition.Right){
-            isDone = true;
-            return;
-        }
-
         commandManager.AddCommand(new DriveForTicks(1, 1000, -1000));
+
+        commandManager.Start();
     }
 
     public void Run(double dt) {
         commandManager.Run();
-
-        if(commandManager.isFinished()){
-            isDone = true;
-        }
-
     }
 
     public void Stop() {
+        commandManager.Stop();
     }
 
     public boolean IsDone() {
-        return isDone;
+        return (commandManager.isFinished() || Robot.getInstance().getMineralPosition() != MineralPosition.Right);
     }
 
     public int GetRunSequence() {

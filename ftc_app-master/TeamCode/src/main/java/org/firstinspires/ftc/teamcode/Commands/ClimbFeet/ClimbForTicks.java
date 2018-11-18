@@ -6,8 +6,6 @@ import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class ClimbForTicks implements iCommand {
 
-    private boolean isDone = false;
-
     private int timer = 5000;
     private int runSequence;
 
@@ -18,6 +16,13 @@ public class ClimbForTicks implements iCommand {
         targetL = _targetL;
         targetR = _targetR;
         runSequence = _runSequence;
+    }
+
+    public ClimbForTicks(int _runSequence, int _targetL, int _targetR, int _timer){
+        targetL = _targetL;
+        targetR = _targetR;
+        runSequence = _runSequence;
+        timer = _timer;
     }
 
     public void Init(){
@@ -33,10 +38,6 @@ public class ClimbForTicks implements iCommand {
 
     public void Run(double dt){
         timer -= dt;
-
-        if(isClimbFeetForTicksDone() || timer <= 0){
-            isDone = true;
-        }
     }
 
     private boolean isClimbFeetForTicksDone(){
@@ -52,7 +53,7 @@ public class ClimbForTicks implements iCommand {
     }
 
     public boolean IsDone(){
-        return isDone;
+        return (isClimbFeetForTicksDone() || timer <= 0);
     }
 
     public int GetRunSequence(){

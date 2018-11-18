@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.RobotMap;
 import org.firstinspires.ftc.teamcode.Systems.DriveBase;
 import org.firstinspires.ftc.teamcode.Utils.AutoPosition;
 import org.firstinspires.ftc.teamcode.Utils.CommandManager;
+import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 
 @Autonomous(name="Auto Gold Iterative", group="Iterative Opmode")
 
@@ -28,21 +29,21 @@ public class Auto_Gold_Iterative extends OpMode {
         Robot.getInstance().setTelemetry(telemetry);
         Robot.getInstance().setRobotMap(new RobotMap(hardwareMap));
         Robot.getInstance().setAutoPosition(AutoPosition.Gold);
+        Robot.getInstance().setMineralPosition(MineralPosition.Center);
 
         commandManager = new CommandManager();
 
         commandManager.AddConstantCommand(new TelemetryLogger());
 
-        commandManager.AddCommand(new MineralPositionDetection(1, true));
-        commandManager.AddCommand(new ClimbForTicks(2, 4000, 4000));
-        commandManager.AddCommand(new Hold(3, 100));
-        commandManager.AddCommand(new OpenClimbHook(4));
-        commandManager.AddCommand(new Hold(5, 500));
-        commandManager.AddCommand(new ClimbForTicks(6, -4100, -4100));
-        commandManager.AddCommand(new Hold(7, 100));
-        commandManager.AddCommand(new MineralLeftPath(8));
-        commandManager.AddCommand(new MineralCenterPath(8));
-        commandManager.AddCommand(new MineralRightPath(8));
+        //commandManager.AddCommand(new MineralPositionDetection(1, true));
+        commandManager.AddCommand(new ClimbForTicks(1, 4000, 4000));
+        commandManager.AddCommand(new OpenClimbHook(2));
+        commandManager.AddCommand(new Hold(3, 500));
+        commandManager.AddCommand(new ClimbForTicks(4, -4100, -4100));
+        commandManager.AddCommand(new Hold(5, 100));
+        commandManager.AddCommand(new MineralLeftPath(6));
+        commandManager.AddCommand(new MineralCenterPath(6));
+        commandManager.AddCommand(new MineralRightPath(6));
     }
     
     @Override
@@ -52,7 +53,7 @@ public class Auto_Gold_Iterative extends OpMode {
 
     @Override
     public void start() {
-
+        commandManager.Start();
     }
 
     @Override
@@ -60,18 +61,11 @@ public class Auto_Gold_Iterative extends OpMode {
         commandManager.Run();
 
         Robot.getInstance().getRobotMap().Loop();
-
-        if(Robot.getInstance().getMineralPosition() != null){
-            Robot.getInstance().getTelemetry().addData("Cube Position", Robot.getInstance().getMineralPosition().toString());
-        }
-
-        Robot.getInstance().getTelemetry().update();
     }
-
-    
     
     @Override
     public void stop() {
         DriveBase.KillDriveMotorPower();
+        commandManager.Stop();
     }
 }
