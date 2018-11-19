@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.Utils.Mathf;
 
 public class ClimbFeet {
 
-    public static int MaxTicks = 4000;
+    public static int MaxTicks = 4100;
     public static int MinTicks = -500;
 
     public static void ClimbFeetDrive(double leftPower, double rightPower){

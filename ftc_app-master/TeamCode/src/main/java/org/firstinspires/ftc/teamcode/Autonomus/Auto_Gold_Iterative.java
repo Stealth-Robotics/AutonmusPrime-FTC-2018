@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.Commands.ClimbFeet.ClimbForTicks;
 import org.firstinspires.ftc.teamcode.Commands.ClimbHook.OpenClimbHook;
 import org.firstinspires.ftc.teamcode.Commands.Hold;
+import org.firstinspires.ftc.teamcode.Commands.MarkerDroper.FlipMarkerDroper;
+import org.firstinspires.ftc.teamcode.Commands.MarkerDroper.UnFlipMarkerDroper;
 import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralCenterPath;
 import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralLeftPath;
 import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralRightPath;
@@ -45,9 +47,12 @@ public class Auto_Gold_Iterative extends OpMode {
         commandManager.AddCommand(new MineralLeftPath(6));
         commandManager.AddCommand(new MineralCenterPath(6));
         commandManager.AddCommand(new MineralRightPath(6));
-
+        //drop the marker
+        commandManager.AddCommand(new FlipMarkerDroper(7));
+        commandManager.AddCommand(new Hold(8, 500));
+        commandManager.AddCommand(new UnFlipMarkerDroper(9));
         //put the climb feet back to 0 for Teleop
-        commandManager.AddCommand(new ClimbForTicks(7,0,0));
+        commandManager.AddCommand(new ClimbForTicks(10,0,0));
     }
     
     @Override
