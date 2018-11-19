@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Commands.ClimbFeet;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.Systems.ClimbFeet;
+import org.firstinspires.ftc.teamcode.Utils.Mathf;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class ClimbForTicks implements iCommand {
@@ -26,7 +27,9 @@ public class ClimbForTicks implements iCommand {
     }
 
     public void Init(){
-        Robot.getInstance().getRobotMap().ResetClimbEncoders();
+        targetL = Mathf.clamp(targetL, ClimbFeet.MinTicks, ClimbFeet.MaxTicks);
+        targetR = Mathf.clamp(targetR, ClimbFeet.MinTicks, ClimbFeet.MaxTicks);
+        //Robot.getInstance().getRobotMap().ResetClimbEncoders();
         Robot.getInstance().getRobotMap().SetClimbModeEncoders();
 
         Robot.getInstance().getRobotMap().rightClamFoot.setTargetPosition(-targetL);

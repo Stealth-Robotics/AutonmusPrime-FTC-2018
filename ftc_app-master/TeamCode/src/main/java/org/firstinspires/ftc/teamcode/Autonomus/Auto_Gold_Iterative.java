@@ -39,7 +39,7 @@ public class Auto_Gold_Iterative extends OpMode {
         commandManager.AddCommand(new ClimbForTicks(1, 4000, 4000));
         commandManager.AddCommand(new OpenClimbHook(2));
         commandManager.AddCommand(new Hold(3, 500));
-        commandManager.AddCommand(new ClimbForTicks(4, -4500, -4500));
+        commandManager.AddCommand(new ClimbForTicks(4, -500, -500));
         commandManager.AddCommand(new Hold(5, 100));
         commandManager.AddCommand(new MineralLeftPath(6));
         commandManager.AddCommand(new MineralCenterPath(6));
