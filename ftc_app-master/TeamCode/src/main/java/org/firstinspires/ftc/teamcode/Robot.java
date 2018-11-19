@@ -4,6 +4,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.Systems.ClimbHook;
+import org.firstinspires.ftc.teamcode.Systems.MarkerDroper;
 import org.firstinspires.ftc.teamcode.Utils.AutoPosition;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 
@@ -37,6 +38,7 @@ public class Robot {
         robotMap = _robotMap;
 
         ClimbHook.CloseHook();
+        MarkerDroper.UnFlip();
     }
     //endregion robotMap
 

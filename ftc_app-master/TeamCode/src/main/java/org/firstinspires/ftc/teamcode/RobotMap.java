@@ -36,6 +36,8 @@ public class RobotMap {
     public DcMotorEx rightClamFoot;
 
     public Servo climbHook;
+
+    public Servo markerDroper;
     
     // The IMU sensor object
     public BNO055IMU imu;
@@ -77,6 +79,8 @@ public class RobotMap {
         //endregion
 
         climbHook = hardwareMap.get(Servo.class, "Servo2:0");
+
+        markerDroper = hardwareMap.get(Servo.class, "Servo2:1");
         
         initIMU();
     }
