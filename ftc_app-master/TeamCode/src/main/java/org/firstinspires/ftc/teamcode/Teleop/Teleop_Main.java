@@ -48,7 +48,7 @@ public class Teleop_Main extends OpMode {
 
         //region Climb Feet Drive
         //TODO: switch this over to ticks not power
-            deadZone = 0.1;
+            /*deadZone = 0.1;
             double left, right;
 
             if(gamepad2.left_stick_y > deadZone || gamepad2.left_stick_y < -deadZone){
@@ -63,7 +63,25 @@ public class Teleop_Main extends OpMode {
                 right = 0.0;
             }
 
-            ClimbFeet.ClimbFeetDrive(-left, -right);
+            ClimbFeet.ClimbFeetDrive(-left, -right);*/
+
+        deadZone = 0.1;
+        int Speed = 50;
+        float left, right;
+
+        if(gamepad2.left_stick_y > deadZone || gamepad2.left_stick_y < -deadZone){
+            left = gamepad2.left_stick_y;
+        } else {
+            left = 0.0f;
+        }
+
+        if(gamepad2.right_stick_y > deadZone || gamepad2.right_stick_y < -deadZone){
+            right = gamepad2.right_stick_y;
+        } else {
+            right = 0.0f;
+        }
+
+        ClimbFeet.ClimbFeetDriveTicks((int)(ClimbFeet.GetLeftTarget() + (left * Speed)), (int)(ClimbFeet.GetRightTarget() + (right * Speed)));
         //endregion
 
         //region Climb Hook

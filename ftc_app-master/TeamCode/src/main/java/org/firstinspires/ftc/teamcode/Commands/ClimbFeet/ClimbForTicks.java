@@ -26,17 +26,8 @@ public class ClimbForTicks implements iCommand {
         timer = _timer;
     }
 
-    public void Init(){
-        targetL = Mathf.clamp(targetL, ClimbFeet.MinTicks, ClimbFeet.MaxTicks);
-        targetR = Mathf.clamp(targetR, ClimbFeet.MinTicks, ClimbFeet.MaxTicks);
-        //Robot.getInstance().getRobotMap().ResetClimbEncoders();
-        Robot.getInstance().getRobotMap().SetClimbModeEncoders();
-
-        Robot.getInstance().getRobotMap().rightClamFoot.setTargetPosition(-targetL);
-        Robot.getInstance().getRobotMap().rightClamFoot.setPower(0.8);
-
-        Robot.getInstance().getRobotMap().leftClamFoot.setTargetPosition(-targetR);
-        Robot.getInstance().getRobotMap().leftClamFoot.setPower(0.8);
+    public void Init() {
+        ClimbFeet.ClimbFeetDriveTicks(targetL, targetR);
     }
 
     public void Run(double dt){

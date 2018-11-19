@@ -36,13 +36,18 @@ public class Auto_Gold_Iterative extends OpMode {
         commandManager.AddConstantCommand(new TelemetryLogger());
 
         commandManager.AddCommand(new MineralPositionDetection(1, true));
+        //climb down
         commandManager.AddCommand(new ClimbForTicks(2, 3700, 3700));
         commandManager.AddCommand(new OpenClimbHook(3));
         commandManager.AddCommand(new ClimbForTicks(4, -500, -500));
         commandManager.AddCommand(new Hold(5, 100));
+        //knock off path
         commandManager.AddCommand(new MineralLeftPath(6));
         commandManager.AddCommand(new MineralCenterPath(6));
         commandManager.AddCommand(new MineralRightPath(6));
+
+        //put the climb feet back to 0 for Teleop
+        commandManager.AddCommand(new ClimbForTicks(7,0,0));
     }
     
     @Override
