@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.Commands.DriveBase;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.Systems.DriveBase;
-import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class DriveForTicks implements iCommand {

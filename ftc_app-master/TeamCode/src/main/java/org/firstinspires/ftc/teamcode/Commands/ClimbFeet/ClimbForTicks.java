@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Commands.ClimbFeet;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.Systems.ClimbFeet;
-import org.firstinspires.ftc.teamcode.Utils.Mathf;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
 public class ClimbForTicks implements iCommand {
