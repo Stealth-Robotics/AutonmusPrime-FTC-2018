@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.Utils;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Robot;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class CommandManager {
     }
 
     public void Run() {
-        Robot.getInstance().getTelemetry().addData("Active Command", CurrentRunId);
+        //Robot.getInstance().getTelemetry().addData("Active Command", CurrentRunId);
 
         //run constant commands
         for (int i = 0; i < ConstantCommands.size(); i++){

@@ -47,6 +47,7 @@ public class Teleop_Main extends OpMode {
         //endregion
 
         //region Climb Feet Drive
+        //TODO: switch this over to ticks not power
             deadZone = 0.1;
             double left, right;
 
