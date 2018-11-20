@@ -19,13 +19,13 @@ public class DriveByGyro implements iCommand {
     private int newLeftTarget;
     private int newRightTarget;
 
-    private static final double     TICKS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    private static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    private static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    private static final double     TICKS_PER_INCH         = (TICKS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
+    private static final double TICKS_PER_MOTOR_REV    = 1120 ;
+    private static final double DRIVE_GEAR_REDUCTION    = 1.143 ;     // This is < 1.0 if geared UP
+    private static final double WHEEL_DIAMETER_INCHES = 4.0 ;     // For figuring circumference
+    private static final double TICKS_PER_INCH = (TICKS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * Math.PI);
 
-    private static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
+    private static final double P_DRIVE_COEFF = 0.15;     // Larger is more responsive, but also less stable
 
     public DriveByGyro(int _runSequence, double _speed, double _distance, double _angle){
         runSequence = _runSequence;
@@ -36,9 +36,9 @@ public class DriveByGyro implements iCommand {
 
     public void Init() {
         // Determine new target position, and pass to motor controller
-        int moveCounts = (int)(distance * TICKS_PER_INCH);
-        newLeftTarget = Robot.getInstance().getRobotMap().frontLeftDrive.getCurrentPosition() + moveCounts;
-        newRightTarget = Robot.getInstance().getRobotMap().frontRightDrive.getCurrentPosition() + moveCounts;
+        int moveTicks = (int)(distance * TICKS_PER_INCH);
+        newLeftTarget = Robot.getInstance().getRobotMap().frontLeftDrive.getCurrentPosition() + moveTicks;
+        newRightTarget = Robot.getInstance().getRobotMap().frontRightDrive.getCurrentPosition() + moveTicks;
 
         // Turn On RUN_TO_POSITION(SetDriveModeEncoders) and Set Target
         Robot.getInstance().getRobotMap().SetDriveModeEncoders();
