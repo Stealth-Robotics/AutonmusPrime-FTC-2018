@@ -93,7 +93,6 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
 
-
     @Override
     public void runOpMode() {
 

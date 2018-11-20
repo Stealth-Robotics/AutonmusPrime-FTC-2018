@@ -12,8 +12,8 @@ import java.util.List;
 public class MineralPositionDetection implements iCommand {
     private boolean isDone = false;
 
-    private int timer = 5000;
-    private boolean useTimeout = true;
+    private int timer = 10000;
+    private boolean useTimeout;
     private int runSequence;
 
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
@@ -82,7 +82,7 @@ public class MineralPositionDetection implements iCommand {
 
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         //increase the minimum confidence for objects from the 0.4 default
-        tfodParameters.minimumConfidence = 0.3f;
+        tfodParameters.minimumConfidence = 0.25f;
 
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, Robot.getInstance().getVuforia());
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);

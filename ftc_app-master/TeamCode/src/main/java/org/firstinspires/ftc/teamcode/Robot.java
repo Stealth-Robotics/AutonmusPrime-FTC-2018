@@ -42,6 +42,7 @@ public class Robot {
         MarkerDroper.UnFlip();
 
         ClimbFeet.ResetEncoders();
+        Robot.getInstance().getRobotMap().ResetDriveEncoders();
     }
     //endregion robotMap
 

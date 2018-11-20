@@ -9,6 +9,11 @@ import org.firstinspires.ftc.teamcode.Robot;
 
 public class DriveBase {
 
+    // These constants define the desired driving/control characteristics
+    // The can/should be tweaked to suite the specific robot drive train.
+    public static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
+    public static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
+
     public static void MechanumDrive(double LeftStickX, double LeftStickY, double RightStickX) {
         Robot.getInstance().getRobotMap().SetDriveModeNoEncoders();
 

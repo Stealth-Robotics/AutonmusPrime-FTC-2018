@@ -41,7 +41,7 @@ public class DriveForTicks implements iCommand {
     }
 
     private boolean isDriveForTicksDone(){
-        int tolerance = 40;
+        int tolerance = 20;
         int errorL = (Robot.getInstance().getRobotMap().frontLeftDrive.getTargetPosition() - Robot.getInstance().getRobotMap().frontLeftDrive.getCurrentPosition());
         int errorR = (Robot.getInstance().getRobotMap().frontRightDrive.getTargetPosition() - Robot.getInstance().getRobotMap().frontRightDrive.getCurrentPosition());
 

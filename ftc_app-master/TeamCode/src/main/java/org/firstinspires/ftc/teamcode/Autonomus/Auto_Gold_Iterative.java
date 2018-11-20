@@ -31,7 +31,7 @@ public class Auto_Gold_Iterative extends OpMode {
         Robot.getInstance().setTelemetry(telemetry);
         Robot.getInstance().setRobotMap(new RobotMap(hardwareMap));
         Robot.getInstance().setAutoPosition(AutoPosition.Gold);
-        Robot.getInstance().setMineralPosition(MineralPosition.Center);
+        //Robot.getInstance().setMineralPosition(MineralPosition.Center);
 
         commandManager = new CommandManager();
 
@@ -39,7 +39,7 @@ public class Auto_Gold_Iterative extends OpMode {
 
         commandManager.AddCommand(new MineralPositionDetection(1, true));
         //climb down
-        commandManager.AddCommand(new ClimbForTicks(2, 3700, 3700));
+        commandManager.AddCommand(new ClimbForTicks(2, 3500, 3500));
         commandManager.AddCommand(new OpenClimbHook(3));
         commandManager.AddCommand(new ClimbForTicks(4, -500, -500));
         commandManager.AddCommand(new Hold(5, 100));
