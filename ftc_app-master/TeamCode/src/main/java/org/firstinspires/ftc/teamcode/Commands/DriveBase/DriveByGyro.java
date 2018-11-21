@@ -23,12 +23,6 @@ public class DriveByGyro implements iCommand {
     private int newLeftTarget;
     private int newRightTarget;
 
-    private static final double TICKS_PER_MOTOR_REV    = 1120 ;
-    private static final double DRIVE_GEAR_REDUCTION    = 1.143 ;     // This is < 1.0 if geared UP
-    private static final double WHEEL_DIAMETER_INCHES = 4.0 ;     // For figuring circumference
-    private static final double TICKS_PER_INCH = (TICKS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
-
     private static final double P_DRIVE_COEFF = 0.15;     // Larger is more responsive, but also less stable
 
     public DriveByGyro(int _runSequence, double _speed, double _distance, double _angle){
@@ -39,19 +33,21 @@ public class DriveByGyro implements iCommand {
     }
 
     public void Init() {
+        Robot.getInstance().getRobotMap().initIMU();
+        //reset the encoders
+        Robot.getInstance().getRobotMap().ResetDriveEncoders();
+
         // Determine new target position, and pass to motor controller
-        int moveTicks = (int)(distance * TICKS_PER_INCH);
-        newLeftTarget = Robot.getInstance().getRobotMap().frontLeftDrive.getCurrentPosition() + moveTicks;
-        newRightTarget = Robot.getInstance().getRobotMap().frontRightDrive.getCurrentPosition() + moveTicks;
+        int moveTicks = (int)(distance * DriveBase.TICKS_PER_INCH);
 
         // Turn On RUN_TO_POSITION(SetDriveModeEncoders) and Set Target
         Robot.getInstance().getRobotMap().SetDriveModeEncoders();
 
-        Robot.getInstance().getRobotMap().frontLeftDrive.setTargetPosition(newLeftTarget);
-        Robot.getInstance().getRobotMap().frontRightDrive.setTargetPosition(newRightTarget);
+        Robot.getInstance().getRobotMap().frontLeftDrive.setTargetPosition(moveTicks);
+        Robot.getInstance().getRobotMap().frontRightDrive.setTargetPosition(-moveTicks);
 
 
-        // start movin
+        // start moving
         speed = Range.clip(Math.abs(speed), 0.0, 1.0);
         Robot.getInstance().getRobotMap().frontLeftDrive.setPower(speed);
         Robot.getInstance().getRobotMap().frontRightDrive.setPower(speed);

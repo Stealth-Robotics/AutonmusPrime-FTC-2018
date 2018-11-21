@@ -32,6 +32,7 @@ public class TurnByGyro implements iCommand {
     }
 
     public void Init() {
+        Robot.getInstance().getRobotMap().initIMU();
         Robot.getInstance().getRobotMap().SetDriveModeNoEncoders();
     }
 
@@ -79,11 +80,11 @@ public class TurnByGyro implements iCommand {
         Robot.getInstance().getRobotMap().frontRightDrive.setPower(rightSpeed);
         Robot.getInstance().getRobotMap().rearRightDrive.setPower(rightSpeed);
 
-
         // Display it for the driver.
         Robot.getInstance().getTelemetry().addData("Target", "%5.2f", angle);
         Robot.getInstance().getTelemetry().addData("Err/St", "%5.2f/%5.2f", error, steer);
         Robot.getInstance().getTelemetry().addData("Speed.", "%5.2f:%5.2f", leftSpeed, rightSpeed);
+        Robot.getInstance().getTelemetry().update();
 
         return onTarget;
     }
@@ -99,7 +100,7 @@ public class TurnByGyro implements iCommand {
         double robotError;
 
         // calculate error in -179 to +180 range  (
-        robotError = targetAngle - Robot.getInstance().getRobotMap().imu.getAngularOrientation().thirdAngle; //gyro.getIntegratedZValue();
+        robotError = targetAngle - Robot.getInstance().getRobotMap().IMUgetAngles()[0]; //gyro.getIntegratedZValue();
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;

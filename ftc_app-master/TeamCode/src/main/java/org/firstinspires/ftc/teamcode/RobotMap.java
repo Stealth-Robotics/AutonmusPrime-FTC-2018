@@ -42,6 +42,8 @@ public class RobotMap {
 
         hardwareMap = HwMap;
 
+        initIMU();
+
         //region Drive Base
 
         frontLeftDrive  = hardwareMap.get(DcMotorEx.class, "1:0");
@@ -78,7 +80,7 @@ public class RobotMap {
 
         markerDroper = hardwareMap.get(Servo.class, "Servo2:1");
         
-        initIMU();
+
     }
 
     //NOTE: IT IS IMPORTANT THAT THIS IS IMPLEMENTED IN THE LOOP FUNCTION OF THE OPMODE
@@ -115,7 +117,7 @@ public class RobotMap {
         driveMode = DriveMode.Run_With_Encoders;
     }
     
-    private void initIMU() {
+    public void initIMU() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         
         parameters.mode = BNO055IMU.SensorMode.IMU;

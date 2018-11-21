@@ -108,9 +108,9 @@ public class MineralPositionDetection implements iCommand {
                     for (Recognition recognition : updatedRecognitions) {
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                             goldMineralX = (int) recognition.getLeft();
-                        } else if (silverMineral1X == -1) {
+                        } else if (silverMineral1X == -1 && recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
                             silverMineral1X = (int) recognition.getLeft();
-                        } else {
+                        } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)){
                             silverMineral2X = (int) recognition.getLeft();
                         }
                     }
@@ -153,6 +153,8 @@ public class MineralPositionDetection implements iCommand {
                             return MineralPosition.Right;
                         }
                     }
+
+                    Robot.getInstance().getTelemetry().update();
                 }
 
 
