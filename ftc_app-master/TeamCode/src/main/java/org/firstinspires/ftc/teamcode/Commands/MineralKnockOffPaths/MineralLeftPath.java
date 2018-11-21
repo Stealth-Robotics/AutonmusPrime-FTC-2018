@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths;
 
+import org.firstinspires.ftc.teamcode.Commands.DriveBase.DriveByGyro;
 import org.firstinspires.ftc.teamcode.Commands.DriveBase.DriveForTicks;
+import org.firstinspires.ftc.teamcode.Commands.DriveBase.TurnByGyro;
+import org.firstinspires.ftc.teamcode.Commands.Hold;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.Systems.DriveBase;
 import org.firstinspires.ftc.teamcode.Utils.CommandManager;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
@@ -18,10 +22,11 @@ public class MineralLeftPath implements iCommand {
 
     public void Init() {
         commandManager.AddCommand(new DriveForTicks(1, 650, 650));
-        commandManager.AddCommand(new DriveForTicks(2, -445, 445));
-        commandManager.AddCommand(new DriveForTicks(3, 2200, 2200));
-        commandManager.AddCommand(new DriveForTicks(4, 1500, -1500));
-        commandManager.AddCommand(new DriveForTicks(5, 2200, 2200));
+        commandManager.AddCommand(new DriveForTicks(2, -370, 370));
+        commandManager.AddCommand(new DriveForTicks(3, 2300, 2300));
+        commandManager.AddCommand(new DriveForTicks(4, 900, -900));
+        commandManager.AddCommand(new DriveForTicks(5, 2400, 2400));
+        commandManager.AddCommand(new DriveForTicks(6, 850, -850));
 
         commandManager.Start();
     }

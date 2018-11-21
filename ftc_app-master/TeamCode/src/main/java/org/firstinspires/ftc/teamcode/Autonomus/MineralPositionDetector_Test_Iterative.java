@@ -22,7 +22,7 @@ public class MineralPositionDetector_Test_Iterative extends OpMode {
         Robot.getInstance().setTelemetry(telemetry);
         Robot.getInstance().setRobotMap(new RobotMap(hardwareMap));
         Robot.getInstance().setAutoPosition(AutoPosition.Gold);
-        Robot.getInstance().setMineralPosition(MineralPosition.Unidentified);
+        //Robot.getInstance().setMineralPosition(MineralPosition.Unidentified);
 
         commandManager = new CommandManager();
 

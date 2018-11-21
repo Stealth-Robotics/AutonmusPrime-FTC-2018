@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.Commands.DriveBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.Systems.DriveBase;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
@@ -85,6 +89,7 @@ public class DriveByGyro implements iCommand {
             Robot.getInstance().getTelemetry().addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
             Robot.getInstance().getTelemetry().addData("Actual",  "%7d:%7d",      Robot.getInstance().getRobotMap().frontLeftDrive.getCurrentPosition(), Robot.getInstance().getRobotMap().frontRightDrive.getCurrentPosition());
             Robot.getInstance().getTelemetry().addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
+            Robot.getInstance().getTelemetry().update();
         } else {
             isDone = true;
         }
@@ -97,11 +102,8 @@ public class DriveByGyro implements iCommand {
      *          +ve error means the robot should turn LEFT (CCW) to reduce error.
      */
     private double getError(double targetAngle) {
-
-        double robotError;
-
-        // calculate error in -179 to +180 range  (
-        robotError = targetAngle - Robot.getInstance().getRobotMap().imu.getAngularOrientation().thirdAngle; //gyro.getIntegratedZValue();
+        // calculate error in -179 to +180 range
+        double robotError = targetAngle - Robot.getInstance().getRobotMap().IMUgetAngles()[0]; //gyro.getIntegratedZValue();
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;

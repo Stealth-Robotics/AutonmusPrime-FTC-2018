@@ -17,7 +17,12 @@ public class MineralRightPath implements iCommand {
     }
 
     public void Init() {
-        commandManager.AddCommand(new DriveForTicks(1, 1000, -1000));
+        commandManager.AddCommand(new DriveForTicks(1, 650, 650));
+        commandManager.AddCommand(new DriveForTicks(2, 370, -370));
+        commandManager.AddCommand(new DriveForTicks(3, 2300, 2300));
+        commandManager.AddCommand(new DriveForTicks(4, -900, 900));
+        commandManager.AddCommand(new DriveForTicks(5, 2400, 2400));
+        commandManager.AddCommand(new DriveForTicks(6, -850, 850));
 
         commandManager.Start();
     }

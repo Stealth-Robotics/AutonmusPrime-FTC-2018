@@ -30,10 +30,10 @@ public class DriveForTicks implements iCommand {
         Robot.getInstance().getRobotMap().SetDriveModeEncoders();
 
         Robot.getInstance().getRobotMap().frontLeftDrive.setTargetPosition(targetL);
-        Robot.getInstance().getRobotMap().frontLeftDrive.setPower(0.8);
+        Robot.getInstance().getRobotMap().frontLeftDrive.setPower(0.5);
 
         Robot.getInstance().getRobotMap().frontRightDrive.setTargetPosition(-targetR);
-        Robot.getInstance().getRobotMap().frontRightDrive.setPower(0.8);
+        Robot.getInstance().getRobotMap().frontRightDrive.setPower(0.5);
     }
 
     public void Run(double dt) {

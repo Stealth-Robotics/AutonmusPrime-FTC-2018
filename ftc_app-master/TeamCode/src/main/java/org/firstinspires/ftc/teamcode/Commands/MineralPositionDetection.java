@@ -130,7 +130,32 @@ public class MineralPositionDetection implements iCommand {
                     }
 
                     Robot.getInstance().getTelemetry().update();
+                } else if (updatedRecognitions.size() <= 2 && updatedRecognitions.size() > 0){
+                    int goldMineralX = -1;
+                    int imageSizeX = -1;
+
+                    for (Recognition recognition : updatedRecognitions){
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)){
+                            goldMineralX = (int) recognition.getLeft();
+                            imageSizeX = recognition.getImageWidth();
+                        }
+                    }
+
+                    if (goldMineralX != -1 && imageSizeX != -1){
+                        if(goldMineralX <= imageSizeX/3){
+                            Robot.getInstance().getTelemetry().addData("Gold Mineral Position", "Left");
+                            return MineralPosition.Left;
+                        } else if (goldMineralX > imageSizeX/3 && goldMineralX <= (imageSizeX/3+imageSizeX/3)){
+                            Robot.getInstance().getTelemetry().addData("Gold Mineral Position", "Center");
+                            return MineralPosition.Center;
+                        } else {
+                            Robot.getInstance().getTelemetry().addData("Gold Mineral Position", "Right");
+                            return MineralPosition.Right;
+                        }
+                    }
                 }
+
+
             }
         }
         return null;
