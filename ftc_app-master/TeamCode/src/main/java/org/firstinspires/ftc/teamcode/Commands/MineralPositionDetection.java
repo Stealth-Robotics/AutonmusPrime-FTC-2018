@@ -12,7 +12,7 @@ import java.util.List;
 public class MineralPositionDetection implements iCommand {
     private boolean isDone = false;
 
-    private int timer = 10000;
+    private int timer = 5000;
     private boolean useTimeout;
     private int runSequence;
 

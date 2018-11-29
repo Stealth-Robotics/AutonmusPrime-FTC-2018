@@ -31,7 +31,7 @@ public class Auto_Gold_Iterative extends OpMode {
         Robot.getInstance().setTelemetry(telemetry);
         Robot.getInstance().setRobotMap(new RobotMap(hardwareMap));
         Robot.getInstance().setAutoPosition(AutoPosition.Gold);
-        //Robot.getInstance().setMineralPosition(MineralPosition.Center);
+        Robot.getInstance().setMineralPosition(MineralPosition.Left);
 
         commandManager = new CommandManager();
 
