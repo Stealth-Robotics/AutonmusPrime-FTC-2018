@@ -17,7 +17,7 @@ public class DropMarker implements iCommand {
     public void Init() {
         //drop the marker
         commandManager.AddCommand(new FlipMarkerDroper(1));
-        commandManager.AddCommand(new Hold(2, 500));
+        commandManager.AddCommand(new Hold(2, 250));
         commandManager.AddCommand(new UnFlipMarkerDroper(3));
 
         commandManager.Start();

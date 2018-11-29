@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths;
 
 import org.firstinspires.ftc.teamcode.Commands.DriveBase.DriveByGyro;
-import org.firstinspires.ftc.teamcode.Commands.DriveBase.DriveForTicks;
 import org.firstinspires.ftc.teamcode.Commands.DriveBase.TurnByGyro;
 import org.firstinspires.ftc.teamcode.Commands.MarkerDroper.DropMarker;
 import org.firstinspires.ftc.teamcode.Robot;
