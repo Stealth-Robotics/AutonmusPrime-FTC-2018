@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomus;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Commands.ClimbFeet.ClimbForTicks;
@@ -21,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Utils.AutoPosition;
 import org.firstinspires.ftc.teamcode.Utils.CommandManager;
 
 @Autonomous(name="Drive By Gyro Test", group="Iterative Opmode")
-
+@Disabled
 public class DriveByGyro_Test_Iterative extends OpMode {
 
     private CommandManager commandManager;
@@ -38,25 +39,6 @@ public class DriveByGyro_Test_Iterative extends OpMode {
         //commandManager.AddConstantCommand(new TelemetryLogger());
 
         commandManager.AddCommand(new DriveByGyro(1, DriveBase.DRIVE_SPEED, 12));
-        //commandManager.AddCommand(new TurnByGyro(2, DriveBase.TURN_SPEED, 90));
-        //commandManager.AddCommand(new DriveByGyro(3, DriveBase.DRIVE_SPEED, 12, 0));
-
-        /*commandManager.AddCommand(new MineralPositionDetection(1, true));
-        //climb down
-        commandManager.AddCommand(new ClimbForTicks(2, 3400, 3400));
-        commandManager.AddCommand(new OpenClimbHook(3));
-        commandManager.AddCommand(new ClimbForTicks(4, -500, -500));
-        commandManager.AddCommand(new Hold(5, 100));
-        //knock off path
-        commandManager.AddCommand(new MineralLeftPath(6));
-        commandManager.AddCommand(new MineralCenterPath(6));
-        commandManager.AddCommand(new MineralRightPath(6));
-        //drop the marker
-        commandManager.AddCommand(new FlipMarkerDroper(7));
-        commandManager.AddCommand(new Hold(8, 500));
-        commandManager.AddCommand(new UnFlipMarkerDroper(9));
-        //put the climb feet back to 0 for Teleop
-        commandManager.AddCommand(new ClimbForTicks(10,0,0));*/
     }
     
     @Override

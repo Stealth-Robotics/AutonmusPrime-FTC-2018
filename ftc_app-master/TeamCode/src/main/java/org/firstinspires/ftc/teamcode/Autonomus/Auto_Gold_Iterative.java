@@ -49,7 +49,7 @@ public class Auto_Gold_Iterative extends OpMode {
         commandManager.AddCommand(new MineralRightPath(6));
 
         //put the climb feet back to 0 for Teleop
-        commandManager.AddCommand(new ClimbForTicks(10,0,0));
+        //commandManager.AddCommand(new ClimbForTicks(10,0,0));
     }
     
     @Override
