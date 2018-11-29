@@ -15,8 +15,8 @@ public class TurnByGyro implements iCommand {
     private double Speed;
     private double Angle;
 
-    static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
+    static final double     HEADING_THRESHOLD       = 2;      // As tight as we can make it with an integer gyro
+    static final double     P_TURN_COEFF            = -0.2;   // Larger is more responsive, but also less stable
 
     public TurnByGyro(int _runSequence, double speed, double angle){
         runSequence = _runSequence;
@@ -32,7 +32,13 @@ public class TurnByGyro implements iCommand {
     }
 
     public void Init() {
-        Robot.getInstance().getRobotMap().initIMU();
+        //Robot.getInstance().getRobotMap().initIMU();
+
+        /*// calculate target angle in -179 to +180 range based on current angle
+        Angle = Angle - Robot.getInstance().getRobotMap().IMUgetAngles()[0];
+        while (Angle > 180)  Angle -= 360;
+        while (Angle <= -180) Angle += 360;*/
+
         Robot.getInstance().getRobotMap().SetDriveModeNoEncoders();
     }
 
@@ -71,7 +77,7 @@ public class TurnByGyro implements iCommand {
         else {
             steer = getSteer(error, PCoeff);
             rightSpeed  = speed * steer;
-            leftSpeed   = -rightSpeed;
+            leftSpeed   = (speed * steer);
         }
 
         // Send desired speeds to motors.

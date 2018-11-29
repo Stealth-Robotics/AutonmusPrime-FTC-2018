@@ -11,14 +11,14 @@ public class DriveBase {
 
     private static final double TICKS_PER_MOTOR_REV    = 1120;
     private static final double DRIVE_GEAR_REDUCTION    = 1.143; // This is < 1.0 if geared UP
-    private static final double WHEEL_DIAMETER_INCHES = 4.0; // For figuring circumference
+    private static final double WHEEL_DIAMETER_INCHES = 8.0; // For figuring circumference
     public static final double TICKS_PER_INCH = (TICKS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
+            (WHEEL_DIAMETER_INCHES * Math.PI); //16,086.49056
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    public static final double DRIVE_SPEED = 0.55;     // Nominal speed for better accuracy.
-    public static final double TURN_SPEED = 0.5;     // Nominal half speed for better accuracy.
+    public static final double DRIVE_SPEED = 0.45;     // Nominal speed for better accuracy.
+    public static final double TURN_SPEED = 0.35;     // Nominal half speed for better accuracy.
 
     public static void MechanumDrive(double LeftStickX, double LeftStickY, double RightStickX) {
         Robot.getInstance().getRobotMap().SetDriveModeNoEncoders();
@@ -53,6 +53,9 @@ public class DriveBase {
     }
 
     public static void POVDrive(double Drive, double Turn){
+        //make sure that the motors are in the correct setup
+        Robot.getInstance().getRobotMap().SetDriveModeNoEncoders();
+
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;

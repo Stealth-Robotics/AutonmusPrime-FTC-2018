@@ -38,9 +38,9 @@ public class Teleop_Main extends OpMode {
             //calculate drive value from triggers instead of using the analog stick to do it.
             double drive = 0;
             if(gamepad1.left_trigger > deadZone){
-                drive = gamepad1.left_trigger;
+                drive = -gamepad1.left_trigger;
             } else if (gamepad1.right_trigger > deadZone){
-                drive  = -gamepad1.right_trigger;
+                drive  = gamepad1.right_trigger;
             }
 
             DriveBase.POVDrive(gamepad1.left_stick_x, drive);
@@ -48,22 +48,23 @@ public class Teleop_Main extends OpMode {
 
         //region Climb Feet Drive
             deadZone = 0.1;
-            int Speed = 50;
-            float left, right;
+            int Speed = 100;
+            double left, right;
 
-            if(gamepad2.left_stick_y > deadZone || gamepad2.left_stick_y < -deadZone){
+            if(Math.abs(gamepad2.left_stick_y) > deadZone){
                 left = gamepad2.left_stick_y;
             } else {
-                left = 0.0f;
+                left = 0;
             }
 
-            if(gamepad2.right_stick_y > deadZone || gamepad2.right_stick_y < -deadZone){
+            if(Math.abs(gamepad2.right_stick_y) > deadZone){
                 right = gamepad2.right_stick_y;
             } else {
-                right = 0.0f;
+                right = 0;
             }
 
-            ClimbFeet.ClimbFeetDriveTicks((int)(ClimbFeet.GetLeftTarget() + (left * Speed)), (int)(ClimbFeet.GetRightTarget() + (right * Speed)));
+            ClimbFeet.ClimbFeetDrive(left, right);
+            //ClimbFeet.ClimbFeetDriveTicks(ClimbFeet.GetLeftTarget() + (int)(left * Speed), ClimbFeet.GetRightTarget() + (int)(right * Speed));
         //endregion
 
         //region Climb Hook

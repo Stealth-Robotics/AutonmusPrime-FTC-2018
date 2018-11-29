@@ -23,17 +23,23 @@ public class DriveByGyro implements iCommand {
     private int newLeftTarget;
     private int newRightTarget;
 
-    private static final double P_DRIVE_COEFF = 0.15;     // Larger is more responsive, but also less stable
+    private static final double P_DRIVE_COEFF = -0.01;     // Larger is more responsive, but also less stable
 
-    public DriveByGyro(int _runSequence, double _speed, double _distance, double _angle){
+    public DriveByGyro(int _runSequence, double _speed, double _distance){
         runSequence = _runSequence;
         speed = _speed;
         distance = _distance;
-        angle = _angle;
     }
 
     public void Init() {
-        Robot.getInstance().getRobotMap().initIMU();
+        //Robot.getInstance().getRobotMap().initIMU();
+
+        /*// calculate target angle in -179 to +180 range based on current angle
+        angle = angle - Robot.getInstance().getRobotMap().IMUgetAngles()[0];
+        while (angle > 180)  angle -= 360;
+        while (angle <= -180) angle += 360;*/
+        angle = Robot.getInstance().getRobotMap().IMUgetAngles()[0];
+
         //reset the encoders
         Robot.getInstance().getRobotMap().ResetDriveEncoders();
 
@@ -45,6 +51,9 @@ public class DriveByGyro implements iCommand {
 
         Robot.getInstance().getRobotMap().frontLeftDrive.setTargetPosition(moveTicks);
         Robot.getInstance().getRobotMap().frontRightDrive.setTargetPosition(-moveTicks);
+
+        newLeftTarget = moveTicks;
+        newRightTarget = -moveTicks;
 
 
         // start moving
@@ -69,15 +78,18 @@ public class DriveByGyro implements iCommand {
             double leftSpeed = speed - steer;
             double rightSpeed = speed + steer;
 
-            // Normalize speeds if either one exceeds +/- 1.0;
+            /*// Normalize speeds if either one exceeds +/- 1.0;
             double max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
             if (max > 1.0)
             {
                 leftSpeed /= max;
                 rightSpeed /= max;
-            }
+            }*/
 
+            leftSpeed = Range.clip(Math.abs(leftSpeed), -1.0, 1.0);
             Robot.getInstance().getRobotMap().frontLeftDrive.setPower(leftSpeed);
+
+            rightSpeed = Range.clip(Math.abs(rightSpeed), -1.0, 1.0);
             Robot.getInstance().getRobotMap().frontRightDrive.setPower(rightSpeed);
 
             // Display drive status for the driver.

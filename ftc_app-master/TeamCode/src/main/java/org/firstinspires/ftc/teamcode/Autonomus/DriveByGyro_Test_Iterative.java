@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Commands.ClimbFeet.ClimbForTicks;
 import org.firstinspires.ftc.teamcode.Commands.ClimbHook.OpenClimbHook;
+import org.firstinspires.ftc.teamcode.Commands.DriveBase.DriveByGyro;
+import org.firstinspires.ftc.teamcode.Commands.DriveBase.TurnByGyro;
 import org.firstinspires.ftc.teamcode.Commands.Hold;
 import org.firstinspires.ftc.teamcode.Commands.MarkerDroper.FlipMarkerDroper;
 import org.firstinspires.ftc.teamcode.Commands.MarkerDroper.UnFlipMarkerDroper;
@@ -12,17 +14,15 @@ import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralCente
 import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralLeftPath;
 import org.firstinspires.ftc.teamcode.Commands.MineralKnockOffPaths.MineralRightPath;
 import org.firstinspires.ftc.teamcode.Commands.MineralPositionDetection;
-import org.firstinspires.ftc.teamcode.Commands.TelemetryLogger;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.RobotMap;
 import org.firstinspires.ftc.teamcode.Systems.DriveBase;
 import org.firstinspires.ftc.teamcode.Utils.AutoPosition;
 import org.firstinspires.ftc.teamcode.Utils.CommandManager;
-import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 
-@Autonomous(name="Auto Gold Iterative", group="Iterative Opmode")
+@Autonomous(name="Drive By Gyro Test", group="Iterative Opmode")
 
-public class Auto_Gold_Iterative extends OpMode {
+public class DriveByGyro_Test_Iterative extends OpMode {
 
     private CommandManager commandManager;
 
@@ -37,7 +37,11 @@ public class Auto_Gold_Iterative extends OpMode {
 
         //commandManager.AddConstantCommand(new TelemetryLogger());
 
-        commandManager.AddCommand(new MineralPositionDetection(1, true));
+        commandManager.AddCommand(new DriveByGyro(1, DriveBase.DRIVE_SPEED, 12));
+        //commandManager.AddCommand(new TurnByGyro(2, DriveBase.TURN_SPEED, 90));
+        //commandManager.AddCommand(new DriveByGyro(3, DriveBase.DRIVE_SPEED, 12, 0));
+
+        /*commandManager.AddCommand(new MineralPositionDetection(1, true));
         //climb down
         commandManager.AddCommand(new ClimbForTicks(2, 3400, 3400));
         commandManager.AddCommand(new OpenClimbHook(3));
@@ -47,9 +51,12 @@ public class Auto_Gold_Iterative extends OpMode {
         commandManager.AddCommand(new MineralLeftPath(6));
         commandManager.AddCommand(new MineralCenterPath(6));
         commandManager.AddCommand(new MineralRightPath(6));
-
+        //drop the marker
+        commandManager.AddCommand(new FlipMarkerDroper(7));
+        commandManager.AddCommand(new Hold(8, 500));
+        commandManager.AddCommand(new UnFlipMarkerDroper(9));
         //put the climb feet back to 0 for Teleop
-        commandManager.AddCommand(new ClimbForTicks(10,0,0));
+        commandManager.AddCommand(new ClimbForTicks(10,0,0));*/
     }
     
     @Override

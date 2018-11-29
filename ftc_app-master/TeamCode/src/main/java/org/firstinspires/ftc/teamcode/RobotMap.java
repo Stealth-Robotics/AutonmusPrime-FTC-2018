@@ -33,7 +33,7 @@ public class RobotMap {
 
     public Servo climbHook;
 
-    public Servo markerDroper;
+    public Servo markerDropper;
     
     // The IMU sensor object
     public BNO055IMU imu;
@@ -78,7 +78,7 @@ public class RobotMap {
 
         climbHook = hardwareMap.get(Servo.class, "Servo2:0");
 
-        markerDroper = hardwareMap.get(Servo.class, "Servo2:1");
+        markerDropper = hardwareMap.get(Servo.class, "Servo2:1");
         
 
     }
@@ -143,6 +143,10 @@ public class RobotMap {
         double roll = Math.atan2(2*(w*x + y*z), 1 - 2*(x*x + y*y)) * 180.0 / Math.PI;
         double pitch = Math.asin(2*(w*y - x*z)) * 180.0 / Math.PI;
         double yaw = Math.atan2(2*(w*z + x*y), 1 - 2*(y*y + z*z)) * 180.0 / Math.PI;
+
+        //make the output for the yaw be between 180 and -180 with 0 being forward
+        while (yaw > 180)  yaw -= 360;
+        while (yaw <= -180) yaw += 360;
 
         return new double[]{yaw, pitch, roll};
 
