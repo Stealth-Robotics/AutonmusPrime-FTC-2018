@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomus;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Commands.MineralPositionDetection;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Utils.CommandManager;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 
 @Autonomous(name="Mineral Position Detector Iterative", group="Iterative Opmode")
-
+@Disabled
 public class MineralPositionDetector_Test_Iterative extends OpMode {
 
     private CommandManager commandManager;
