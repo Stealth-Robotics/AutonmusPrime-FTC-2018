@@ -29,14 +29,14 @@ public class MineralRightPath implements iCommand {
         //drive to depot and turn
         commandManager.AddCommand(new TurnByGyro(4, DriveBase.TURN_SPEED, -135));
         commandManager.AddCommand(new DriveByGyro(5, DriveBase.DRIVE_SPEED, -39));
-        commandManager.AddCommand(new TurnByGyro(6, DriveBase.TURN_SPEED, -135));
+        commandManager.AddCommand(new TurnByGyro(6, DriveBase.TURN_SPEED, -125));
 
         //drop off the marker
         commandManager.AddCommand(new DropMarker(7));
 
         //drive to the crater from depot
         commandManager.AddCommand(new DriveByGyro(8,DriveBase.DRIVE_SPEED, 16.25));
-        commandManager.AddCommand(new TurnByGyro(9,DriveBase.TURN_SPEED,-135));
+        commandManager.AddCommand(new TurnByGyro(9,DriveBase.TURN_SPEED,-130));
         commandManager.AddCommand(new DriveByGyro(10,DriveBase.DRIVE_SPEED, 16.25));
         commandManager.AddCommand(new TurnByGyro(11,DriveBase.TURN_SPEED,-135));
         commandManager.AddCommand(new DriveByGyro(12,DriveBase.DRIVE_SPEED, 16.25));
