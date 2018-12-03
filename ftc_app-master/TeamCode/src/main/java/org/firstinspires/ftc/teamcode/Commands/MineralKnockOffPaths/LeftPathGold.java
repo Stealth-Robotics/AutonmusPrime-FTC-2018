@@ -9,12 +9,12 @@ import org.firstinspires.ftc.teamcode.Utils.CommandManager;
 import org.firstinspires.ftc.teamcode.Utils.MineralPosition;
 import org.firstinspires.ftc.teamcode.Utils.iCommand;
 
-public class MineralLeftPath implements iCommand {
+public class LeftPathGold implements iCommand {
     private int runSequence;
 
     private CommandManager commandManager;
 
-    public MineralLeftPath(int _runSequence){
+    public LeftPathGold(int _runSequence){
         runSequence = _runSequence;
         commandManager = new CommandManager();
     }
@@ -40,7 +40,7 @@ public class MineralLeftPath implements iCommand {
         commandManager.AddCommand(new TurnByGyro(11,DriveBase.TURN_SPEED,-125));
         commandManager.AddCommand(new DriveByGyro(12,DriveBase.DRIVE_SPEED, 16.25));
         commandManager.AddCommand(new TurnByGyro(13,DriveBase.TURN_SPEED,-135));
-        commandManager.AddCommand(new DriveByGyro(14,DriveBase.DRIVE_SPEED, 20));
+        commandManager.AddCommand(new DriveByGyro(14,DriveBase.DRIVE_SPEED, 25));
 
 
         commandManager.Start();

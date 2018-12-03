@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.RobotMap;
 import org.firstinspires.ftc.teamcode.Systems.ClimbFeet;
 import org.firstinspires.ftc.teamcode.Systems.ClimbHook;
 import org.firstinspires.ftc.teamcode.Systems.DriveBase;
+import org.firstinspires.ftc.teamcode.Systems.MarkerDroper;
 
 @TeleOp(name="TELEOP Main", group="Iterative Opmode")
 
@@ -74,6 +75,15 @@ public class Teleop_Main extends OpMode {
 
             if(gamepad2.b){
                 ClimbHook.CloseHook();
+            }
+        //endregion
+
+        //region MarkerDroper
+            if(gamepad2.x){
+                MarkerDroper.Flip();
+            }
+            if (gamepad2.y){
+                MarkerDroper.UnFlip();
             }
         //endregion
 

@@ -9,7 +9,7 @@ public class ClimbHook {
     }
 
     public static void CloseHook(){
-        Robot.getInstance().getRobotMap().climbHook.setPosition(0.6);
+        Robot.getInstance().getRobotMap().climbHook.setPosition(0.8);
     }
     //endregion
 }
