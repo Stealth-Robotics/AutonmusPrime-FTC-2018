@@ -6,10 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Commands.TelemetryLogger;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.RobotMap;
+import org.firstinspires.ftc.teamcode.Systems.Arm;
 import org.firstinspires.ftc.teamcode.Systems.ClimbFeet;
 import org.firstinspires.ftc.teamcode.Systems.ClimbHook;
 import org.firstinspires.ftc.teamcode.Systems.DriveBase;
 import org.firstinspires.ftc.teamcode.Systems.MarkerDroper;
+import org.firstinspires.ftc.teamcode.Utils.Mathf;
 
 @TeleOp(name="TELEOP Main", group="Iterative Opmode")
 
@@ -29,6 +31,9 @@ public class Teleop_Main extends OpMode {
     @Override
     public void start() {
     }
+
+    private int ArmTarget = 0;
+    private double ArmGrabberRotationTarget = 0;
 
     @Override
     public void loop() {
@@ -86,6 +91,40 @@ public class Teleop_Main extends OpMode {
                 MarkerDroper.UnFlip();
             }
         //endregion
+
+        //region Arm
+        deadZone = 0.08;
+        int armTurnSpeed = 25;
+
+        //calculate drive value from triggers instead of using the analog stick to do it.
+        double turn = 0;
+        if(gamepad2.left_trigger > deadZone){
+            turn = -gamepad2.left_trigger * armTurnSpeed;
+        } else if (gamepad2.right_trigger > deadZone){
+            turn  = gamepad2.right_trigger * armTurnSpeed;
+        }
+
+        ArmTarget += armTurnSpeed;
+        ArmTarget = Mathf.clamp(ArmTarget, Arm.MinTicks, Arm.MaxTicks);
+
+        Arm.RotateArmToTarget(ArmTarget);
+
+
+        if(gamepad2.left_bumper){
+            Arm.IntakeOut();
+        } else {
+            Arm.IntakeOut();
+        }
+
+
+        if(gamepad2.dpad_up){
+            ArmGrabberRotationTarget += 0.02;
+        } else if (gamepad2.dpad_down){
+            ArmGrabberRotationTarget -= 0.02;
+        }
+
+        Arm.RotateGraber(ArmGrabberRotationTarget);
+        //endregion Arm
 
         //region Telemetry
             TelemetryLogger tm = new TelemetryLogger();

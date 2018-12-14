@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
+import org.firstinspires.ftc.teamcode.Systems.Arm;
 
 public class RobotMap {
     
@@ -23,17 +25,31 @@ public class RobotMap {
 
     public DriveMode driveMode = DriveMode.Run_Without_Encoders;
 
+    //base drive
     public DcMotorEx frontLeftDrive;
     public DcMotorEx frontRightDrive;
     public DcMotorEx rearLeftDrive;
     public DcMotorEx rearRightDrive;
 
+    //climb legs
     public DcMotorEx leftClamFoot;
     public DcMotorEx rightClamFoot;
+
+    //arm
+    public DcMotorEx armRotationMotor;
+
+    public Servo armExtendRelease;
+
+    //grabber
+    public Servo grabberRotation;
+    public Servo intakeSpinner;
 
     public Servo climbHook;
 
     public Servo markerDropper;
+
+    public DigitalChannel armUpperLimitSwitch;
+    public DigitalChannel armLowerLimitSwitch;
     
     // The IMU sensor object
     public BNO055IMU imu;
@@ -76,11 +92,29 @@ public class RobotMap {
         rightClamFoot.setDirection(DcMotor.Direction.REVERSE);
         //endregion
 
+        //region ARM
+        armRotationMotor = hardwareMap.get(DcMotorEx.class, "2:3");
+
+        armRotationMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        armRotationMotor.setDirection(DcMotor.Direction.FORWARD);
+
+        armExtendRelease = hardwareMap.get(Servo.class, "Servo2:2");
+
+        grabberRotation = hardwareMap.get(Servo.class, "Servo2:3");
+
+        intakeSpinner = hardwareMap.get(Servo.class, "Servo2:4");
+
+        armUpperLimitSwitch = hardwareMap.get(DigitalChannel.class, "Sensor2:0");
+        armUpperLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+
+        armLowerLimitSwitch = hardwareMap.get(DigitalChannel.class, "Sensor2:1");
+        armLowerLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
+        //endregion ARM
+
         climbHook = hardwareMap.get(Servo.class, "Servo2:0");
 
         markerDropper = hardwareMap.get(Servo.class, "Servo2:1");
-        
-
     }
 
     //NOTE: IT IS IMPORTANT THAT THIS IS IMPLEMENTED IN THE LOOP FUNCTION OF THE OPMODE
@@ -90,36 +124,15 @@ public class RobotMap {
             rearLeftDrive.setVelocity(frontLeftDrive.getVelocity());
             rearRightDrive.setVelocity(frontRightDrive.getVelocity());
         }
+
+        Arm.CheckLimitSwitches();
     }
-    
-    public void SetDriveModeNoEncoders() {
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveMode = DriveMode.Run_Without_Encoders;
-    }
-    
-    public void SetDriveModeEncoders() {
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //set the back two motors to run without encoders so that we can just mirror the power being sent to the front wheels with the encoders
-        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveMode = DriveMode.Run_With_Encoders;
-    }
-    
-    public void ResetDriveEncoders() {
-        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        driveMode = DriveMode.Run_With_Encoders;
-    }
-    
-    public void initIMU() {
+
+    //region IMU
+
+    private void initIMU() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        
+
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.useExternalCrystal = true;
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -152,6 +165,39 @@ public class RobotMap {
 
     }
 
+    //endregion IMU
+
+    //region DriveEncoders
+    
+    public void SetDriveModeNoEncoders() {
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveMode = DriveMode.Run_Without_Encoders;
+    }
+    
+    public void SetDriveModeEncoders() {
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //set the back two motors to run without encoders so that we can just mirror the power being sent to the front wheels with the encoders
+        rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveMode = DriveMode.Run_With_Encoders;
+    }
+    
+    public void ResetDriveEncoders() {
+        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rearLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rearRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveMode = DriveMode.Run_With_Encoders;
+    }
+
+    //endregion DriveEncoders
+
+    //region ClimbEncoders
+
     public void ResetClimbEncoders() {
         leftClamFoot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightClamFoot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -166,4 +212,22 @@ public class RobotMap {
         leftClamFoot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightClamFoot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+    //endregion ClimbEncoders
+
+    //region ArmEncoder
+
+    public void ResetArmEncoder() {
+        armRotationMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void SetArmModeEncoder() {
+        armRotationMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void SetArmModeNoEncoder() {
+        armRotationMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    //endregion ArmEncoder
 }
