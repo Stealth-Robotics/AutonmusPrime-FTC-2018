@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonomus;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.Commands.Arm.RotateArmToTick;
 import org.firstinspires.ftc.teamcode.Commands.ClimbDown;
 import org.firstinspires.ftc.teamcode.Commands.ClimbFeet.ClimbForTicks;
 import org.firstinspires.ftc.teamcode.Commands.ClimbHook.OpenClimbHook;
@@ -36,7 +37,8 @@ public class Auto_Drop extends OpMode {
         //commandManager.AddConstantCommand(new TelemetryLogger());
 
         //climb down
-        commandManager.AddCommand(new ClimbDown(1));
+        //commandManager.AddCommand(new RotateArmToTick(1, 2250));
+        commandManager.AddCommand(new ClimbDown(2));
     }
     
     @Override
@@ -59,6 +61,7 @@ public class Auto_Drop extends OpMode {
     @Override
     public void stop() {
         DriveBase.KillDriveMotorPower();
+        Robot.getInstance().StopVuforia();
         commandManager.Stop();
     }
 }

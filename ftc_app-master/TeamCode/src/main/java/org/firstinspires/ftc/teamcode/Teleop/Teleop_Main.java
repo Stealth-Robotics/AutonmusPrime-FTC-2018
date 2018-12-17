@@ -40,6 +40,7 @@ public class Teleop_Main extends OpMode {
         //region POV Drive
             //a Dead Zone for the triggers so that the robot will actually move if one isn't pressed
             double deadZone = 0.075;
+            double slowModifier = 0.55;
 
             //calculate drive value from triggers instead of using the analog stick to do it.
             double drive = 0;
@@ -49,7 +50,12 @@ public class Teleop_Main extends OpMode {
                 drive  = gamepad1.right_trigger;
             }
 
-            DriveBase.POVDrive(gamepad1.left_stick_x, drive);
+            if(gamepad1.a){
+                DriveBase.POVDrive(gamepad1.left_stick_x * slowModifier, drive);
+            } else {
+                DriveBase.POVDrive(gamepad1.left_stick_x, drive);
+            }
+
         //endregion
 
         //region Climb Feet Drive
@@ -93,8 +99,8 @@ public class Teleop_Main extends OpMode {
         //endregion
 
         //region Arm
-        deadZone = 0.08;
-        int armTurnSpeed = 25;
+        deadZone = 0.2;
+        int armTurnSpeed = 20;
 
         //calculate drive value from triggers instead of using the analog stick to do it.
         double turn = 0;
@@ -104,7 +110,7 @@ public class Teleop_Main extends OpMode {
             turn  = gamepad2.right_trigger * armTurnSpeed;
         }
 
-        ArmTarget += armTurnSpeed;
+        ArmTarget += turn;
         ArmTarget = Mathf.clamp(ArmTarget, Arm.MinTicks, Arm.MaxTicks);
 
         Arm.RotateArmToTarget(ArmTarget);
@@ -113,17 +119,23 @@ public class Teleop_Main extends OpMode {
         if(gamepad2.left_bumper){
             Arm.IntakeOut();
         } else {
-            Arm.IntakeOut();
+            Arm.IntakeIn();
+        }
+
+        if(gamepad2.right_bumper){
+            Arm.ReleaseArm();
+        } else {
+            Arm.DeReleaseArm();
         }
 
 
         if(gamepad2.dpad_up){
-            ArmGrabberRotationTarget += 0.02;
+            ArmGrabberRotationTarget += 0.05;
         } else if (gamepad2.dpad_down){
-            ArmGrabberRotationTarget -= 0.02;
+            ArmGrabberRotationTarget -= 0.05;
         }
 
-        Arm.RotateGraber(ArmGrabberRotationTarget);
+        Arm.RotateGrabber(ArmGrabberRotationTarget);
         //endregion Arm
 
         //region Telemetry
@@ -138,5 +150,6 @@ public class Teleop_Main extends OpMode {
     @Override
     public void stop() {
         DriveBase.KillDriveMotorPower();
+        Robot.getInstance().StopVuforia();
     }
 }

@@ -14,8 +14,7 @@ public class Robot {
     public Robot() {
         robotMap = null;
         telemetry = null;
-
-        initVuforia();
+        vuforia = null;
     }
 
     private static Robot robotInstance;
@@ -95,10 +94,16 @@ public class Robot {
         return vuforia;
     }
 
+    public void StopVuforia(){
+        if(vuforia.getCamera() != null){
+            vuforia.getCamera().close();
+        }
+    }
+
     /**
      * Initialize the Vuforia localization engine.
      */
-    private void initVuforia() {
+    public boolean initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          */
@@ -111,6 +116,12 @@ public class Robot {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
+
+        if (vuforia.getCamera() == null){
+            return false;
+        }
+
+        return true;
     }
     //endregion vuforia
 }

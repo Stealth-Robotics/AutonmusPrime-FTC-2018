@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonomus;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.Commands.Arm.RotateArmToTick;
 import org.firstinspires.ftc.teamcode.Commands.ClimbDown;
 import org.firstinspires.ftc.teamcode.Commands.ClimbFeet.ClimbForTicks;
 import org.firstinspires.ftc.teamcode.Commands.ClimbHook.OpenClimbHook;
@@ -35,14 +36,15 @@ public class Auto_Gold extends OpMode {
         commandManager = new CommandManager();
 
         //commandManager.AddConstantCommand(new TelemetryLogger());
+        //commandManager.AddCommand(new RotateArmToTick(1, 2250));
 
-        commandManager.AddCommand(new MineralPositionDetection(1, true));
+        commandManager.AddCommand(new MineralPositionDetection(2, true));
         //climb down
-        commandManager.AddCommand(new ClimbDown(2));
+        commandManager.AddCommand(new ClimbDown(3));
         //knock off path
-        commandManager.AddCommand(new LeftPathGold(3));
-        commandManager.AddCommand(new CenterPathGold(3));
-        commandManager.AddCommand(new RightPathGold(3));
+        commandManager.AddCommand(new LeftPathGold(4));
+        commandManager.AddCommand(new CenterPathGold(4));
+        commandManager.AddCommand(new RightPathGold(4));
 
         //put the climb feet back to 0 for Teleop
         //commandManager.AddCommand(new ClimbForTicks(10,0,0));
@@ -70,6 +72,7 @@ public class Auto_Gold extends OpMode {
     @Override
     public void stop() {
         DriveBase.KillDriveMotorPower();
+        Robot.getInstance().StopVuforia();
         commandManager.Stop();
     }
 }

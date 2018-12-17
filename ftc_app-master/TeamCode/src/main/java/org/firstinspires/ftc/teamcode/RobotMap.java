@@ -47,9 +47,6 @@ public class RobotMap {
     public Servo climbHook;
 
     public Servo markerDropper;
-
-    public DigitalChannel armUpperLimitSwitch;
-    public DigitalChannel armLowerLimitSwitch;
     
     // The IMU sensor object
     public BNO055IMU imu;
@@ -59,6 +56,8 @@ public class RobotMap {
         hardwareMap = HwMap;
 
         initIMU();
+
+        Robot.getInstance().initVuforia();
 
         //region Drive Base
 
@@ -93,23 +92,19 @@ public class RobotMap {
         //endregion
 
         //region ARM
-        armRotationMotor = hardwareMap.get(DcMotorEx.class, "2:3");
+        armRotationMotor = hardwareMap.get(DcMotorEx.class, "2:2");
 
         armRotationMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         armRotationMotor.setDirection(DcMotor.Direction.FORWARD);
+
+        ResetArmEncoder();
 
         armExtendRelease = hardwareMap.get(Servo.class, "Servo2:2");
 
         grabberRotation = hardwareMap.get(Servo.class, "Servo2:3");
 
         intakeSpinner = hardwareMap.get(Servo.class, "Servo2:4");
-
-        armUpperLimitSwitch = hardwareMap.get(DigitalChannel.class, "Sensor2:0");
-        armUpperLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
-
-        armLowerLimitSwitch = hardwareMap.get(DigitalChannel.class, "Sensor2:1");
-        armLowerLimitSwitch.setMode(DigitalChannel.Mode.INPUT);
         //endregion ARM
 
         climbHook = hardwareMap.get(Servo.class, "Servo2:0");
@@ -124,8 +119,6 @@ public class RobotMap {
             rearLeftDrive.setVelocity(frontLeftDrive.getVelocity());
             rearRightDrive.setVelocity(frontRightDrive.getVelocity());
         }
-
-        Arm.CheckLimitSwitches();
     }
 
     //region IMU

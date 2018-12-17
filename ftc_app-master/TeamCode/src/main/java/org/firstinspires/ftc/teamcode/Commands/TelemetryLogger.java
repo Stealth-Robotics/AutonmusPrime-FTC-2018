@@ -18,6 +18,8 @@ public class TelemetryLogger implements iConstantCommand {
             Robot.getInstance().getTelemetry().addData("Cube Position", Robot.getInstance().getMineralPosition().toString());
         }
 
+        Robot.getInstance().getTelemetry().addData("Arm_Encoder", Robot.getInstance().getRobotMap().armRotationMotor.getCurrentPosition());
+
         Robot.getInstance().getTelemetry().addData("Encoder_FR", Robot.getInstance().getRobotMap().frontRightDrive.getCurrentPosition());
         Robot.getInstance().getTelemetry().addData("Encoder_FL", Robot.getInstance().getRobotMap().frontLeftDrive.getCurrentPosition());
 
